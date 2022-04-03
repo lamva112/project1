@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:lottie/lottie.dart';
 
+import '../../../utils/fonts.dart';
 import '../components/rounded_button.dart';
 import '../components/rounded_input.dart';
 import '../components/rounded_password_input.dart';
@@ -42,10 +44,9 @@ class _SignUpFormState extends State<SignUpForm> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                      'Wellcome',
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 24,
+                      "Welcome to Petcare",
+                      style: GoogleFonts.quicksand(
+                        textStyle: AppTextStyle.Title2,
                       ),
                     ),
                     Container(

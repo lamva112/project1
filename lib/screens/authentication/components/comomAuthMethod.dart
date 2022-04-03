@@ -75,20 +75,21 @@ Widget socialMediaInterationButtons() {
           onTap: () async {},
           child: Image.asset(
             'assets/images/google.png',
-            width: 60.0,
+            width: 70.0,
+            height: 70.0,
           ),
         ),
         SizedBox(
-          width: 80,
+          width: 60,
         ),
         GestureDetector(
           onTap: () async {
             print('Google Pressed');
-            print('Facebook Pressed');
           },
           child: Image.asset(
             'assets/images/fbook.png',
-            width: 60.0,
+            width: 70.0,
+            height: 70.0,
           ),
         ),
       ],

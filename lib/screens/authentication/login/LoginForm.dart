@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:lottie/lottie.dart';
+import 'package:project1/utils/colors.dart';
 
+import '../../../utils/fonts.dart';
 import '../../constants/reg_exp.dart';
 import '../components/comomAuthMethod.dart';
 import '../components/rounded_button.dart';
@@ -50,19 +53,27 @@ class _LoginFormState extends State<LoginForm> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text(
-                      'Wellcome back',
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 24,
-                      ),
-                    ),
                     Container(
                       width: 300,
-                      height: 250,
+                      height: 200,
                       alignment: Alignment.topCenter,
                       child: Lottie.network(
                           'https://assets6.lottiefiles.com/packages/lf20_z9ed2jna.json'),
+                    ),
+                    Text(
+                      "Login or Sign up",
+                      style: GoogleFonts.quicksand(
+                        textStyle: AppTextStyle.Title2,
+                      ),
+                    ),
+                    Text(
+                      "Login so you can care your pets easily.",
+                      style: GoogleFonts.quicksand(
+                        textStyle: AppTextStyle.Subheadline1,
+                      ),
+                    ),
+                    SizedBox(
+                      height: 50,
                     ),
                     EmailTextFormField(
                         hintText: 'Email',
@@ -84,9 +95,7 @@ class _LoginFormState extends State<LoginForm> {
                         },
                         textEditingController: this._pwd,
                         icon: Icons.lock),
-                    RoundedButton(
-                      title: 'LOGIN',
-                    ),
+                    logInAuthButton(context, 'Sign In'),
                     socialMediaInterationButtons(),
                   ]),
             ),
@@ -98,12 +107,12 @@ class _LoginFormState extends State<LoginForm> {
 
   Widget logInAuthButton(BuildContext context, String buttonName) {
     return Padding(
-      padding: const EdgeInsets.only(left: 20.0, right: 20.0),
+      padding: const EdgeInsets.only(left: 50.0, right: 50.0),
       child: ElevatedButton(
         style: ElevatedButton.styleFrom(
-            minimumSize: Size(MediaQuery.of(context).size.width - 60, 30.0),
+            minimumSize: Size(MediaQuery.of(context).size.width - 10, 40.0),
             elevation: 5.0,
-            primary: Color.fromRGBO(57, 60, 80, 1),
+            primary: AppColors.blue,
             padding: EdgeInsets.only(
               left: 20.0,
               right: 20.0,
@@ -115,10 +124,8 @@ class _LoginFormState extends State<LoginForm> {
             )),
         child: Text(
           buttonName,
-          style: TextStyle(
-            fontSize: 25.0,
-            letterSpacing: 1.0,
-            fontWeight: FontWeight.w400,
+          style: GoogleFonts.quicksand(
+            textStyle: AppTextStyle.Button1,
           ),
         ),
         onPressed: () async {

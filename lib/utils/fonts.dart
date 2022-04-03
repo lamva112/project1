@@ -105,4 +105,11 @@ class AppTextStyle {
     fontStyle: FontStyle.normal,
     fontWeight: FontWeight.bold,
   );
+
+  static final Button1 = TextStyle(
+    color: AppColors.black,
+    fontSize: 16,
+    fontStyle: FontStyle.normal,
+    fontWeight: FontWeight.bold,
+  );
 }
