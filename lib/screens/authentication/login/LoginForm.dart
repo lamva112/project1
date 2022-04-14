@@ -6,6 +6,7 @@ import 'package:project1/utils/colors.dart';
 
 import '../../../utils/fonts.dart';
 import '../../constants/reg_exp.dart';
+import '../../profile/edit_profile_screen.dart';
 import '../components/comomAuthMethod.dart';
 import '../components/rounded_button.dart';
 import '../components/rounded_input.dart';
@@ -132,6 +133,10 @@ class _LoginFormState extends State<LoginForm> {
           if (this._logInKey.currentState!.validate()) {
             print('Validated');
             SystemChannels.textInput.invokeMethod('TextInput.hide');
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => EditProfileScreen()),
+            );
           } else {
             print('Not Validated');
           }

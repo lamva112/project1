@@ -1,3 +1,4 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:project1/screens/authentication/login/login.dart';
 import 'package:project1/screens/onboardings/onboardingWrapper.dart';
@@ -10,6 +11,7 @@ Future<void> main() async {
   SharedPreferences preferences = await SharedPreferences.getInstance();
   initScreen = (preferences.getInt('initScreen') ?? 0);
   await preferences.setInt('initScreen', 1);
+  await Firebase.initializeApp();
   runApp(App());
 }
 
