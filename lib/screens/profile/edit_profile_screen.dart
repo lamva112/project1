@@ -5,12 +5,15 @@ import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
+
 import 'package:project1/screens/profile/widget.dart';
 
+import '../../resources/cloud_data_management.dart';
 import '../../utils/colors.dart';
 import '../../utils/fonts.dart';
+import '../../utils/loading_widget.dart';
 import '../../utils/utils.dart';
+import '../mainscreen/mainscreen.dart';
 
 class EditProfileScreen extends StatefulWidget {
   EditProfileScreen({Key? key}) : super(key: key);
@@ -20,12 +23,14 @@ class EditProfileScreen extends StatefulWidget {
 }
 
 class _EditProfileScreenState extends State<EditProfileScreen> {
-  final TextEditingController _firstnameController = TextEditingController();
-  final TextEditingController _lastnameController = TextEditingController();
-  final TextEditingController phoneEditingController = TextEditingController();
-  final TextEditingController aboutEditingController = TextEditingController();
-  var maskFormatter = new MaskTextInputFormatter(mask: '+84 ### ### ## ##');
+  final GlobalKey<FormState> _EditKey = GlobalKey<FormState>();
+  final TextEditingController _nameController = TextEditingController();
+  final TextEditingController _usernameController = TextEditingController();
+  final TextEditingController _phoneEditingController = TextEditingController();
+  final TextEditingController _aboutEditingController = TextEditingController();
   Uint8List? _image;
+  final CloudStoreDataManagement _cloudStoreDataManagement =
+      CloudStoreDataManagement();
 
   selectImage() async {
     Uint8List im = await pickImage(ImageSource.gallery);
@@ -39,6 +44,16 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   String? selectedItem = 'Male';
 
   DateTime date = DateTime(2022, 1, 1);
+  bool _isLoading = false;
+
+  @override
+  void dispose() {
+    super.dispose();
+    _nameController.dispose();
+    _usernameController.dispose();
+    _phoneEditingController.dispose();
+    _aboutEditingController.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -46,246 +61,241 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
 
     return Scaffold(
       body: SingleChildScrollView(
-        child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-          SizedBox(
-            height: 51,
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.start,
+        child: Form(
+          key: _EditKey,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               SizedBox(
-                width: 16,
+                height: 51,
               ),
-              SvgPicture.asset(
-                'assets/images/Vector.svg',
-                height: 24,
-              ),
-              SizedBox(
-                width: 160,
-              ),
-              Text(
-                "User profile",
-                style: GoogleFonts.quicksand(
-                  textStyle: AppTextStyle.Title2,
-                ),
-              ),
-            ],
-          ),
-          SizedBox(
-            height: 16,
-          ),
-          Row(
-            children: [
-              SizedBox(
-                width: 160,
-              ),
-              Stack(
-                overflow: Overflow.visible,
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  _image != null
-                      ? ClipRRect(
-                          borderRadius: BorderRadius.circular(16),
-                          child: Image.memory(
-                            _image!,
-                            width: 159,
-                            height: 159,
-                            fit: BoxFit.cover,
-                          ),
-                        )
-                      : ClipRRect(
-                          borderRadius: BorderRadius.circular(16),
-                          child: Image.network(
-                            'https://i.stack.imgur.com/l60Hf.png',
-                            width: 159,
-                            height: 159,
-                            fit: BoxFit.cover,
-                          ),
-                        ),
-                  Positioned(
-                    bottom: -25,
-                    left: 55,
-                    child: IconButton(
-                      onPressed: selectImage,
-                      icon: SvgPicture.asset(
-                        'assets/images/camera.svg',
-                        fit: BoxFit.cover,
-                      ),
+                  SizedBox(
+                    width: 16,
+                  ),
+                  SvgPicture.asset(
+                    'assets/images/Vector.svg',
+                    height: 24,
+                  ),
+                  SizedBox(
+                    width: 110,
+                  ),
+                  Text(
+                    "User profile",
+                    style: GoogleFonts.quicksand(
+                      textStyle: AppTextStyle.Title2,
                     ),
                   ),
                 ],
               ),
-            ],
-          ),
-          SizedBox(
-            height: 20,
-          ),
-          Row(
-            children: [
               SizedBox(
-                width: 24,
+                height: 16,
               ),
-              Text(
-                "First Name",
-                style: GoogleFonts.quicksand(
-                  textStyle: AppTextStyle.Body3,
-                ),
-              ),
-            ],
-          ),
-          SizedBox(
-            height: 8,
-          ),
-          TextFieldInput(
-            validator: (String? inputVal) {
-              if (inputVal!.length < 6)
-                return 'First Name must be at least 3 characters';
-              return null;
-            },
-            size: size,
-            textEditingController: _firstnameController,
-          ),
-          SizedBox(
-            height: 24,
-          ),
-          Row(
-            children: [
+              _isLoading
+                  ? LoadingWidget()
+                  : Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Stack(
+                          overflow: Overflow.visible,
+                          children: [
+                            _image != null
+                                ? ClipRRect(
+                                    borderRadius: BorderRadius.circular(16),
+                                    child: Image.memory(
+                                      _image!,
+                                      width: 159,
+                                      height: 159,
+                                      fit: BoxFit.cover,
+                                    ),
+                                  )
+                                : ClipRRect(
+                                    borderRadius: BorderRadius.circular(16),
+                                    child: Image.network(
+                                      'https://i.stack.imgur.com/l60Hf.png',
+                                      width: 159,
+                                      height: 159,
+                                      fit: BoxFit.cover,
+                                    ),
+                                  ),
+                            Positioned(
+                              bottom: -25,
+                              left: 55,
+                              child: IconButton(
+                                onPressed: selectImage,
+                                icon: SvgPicture.asset(
+                                  'assets/images/camera.svg',
+                                  fit: BoxFit.cover,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
               SizedBox(
-                width: 24,
+                height: 20,
               ),
-              Text(
-                "Last Name",
-                style: GoogleFonts.quicksand(
-                  textStyle: AppTextStyle.Body3,
-                ),
-              ),
-            ],
-          ),
-          SizedBox(
-            height: 8,
-          ),
-          TextFieldInput(
-            validator: (String? inputVal) {
-              if (inputVal!.length < 6)
-                return 'First name must be at least 3 characters';
-              return null;
-            },
-            size: size,
-            textEditingController: _lastnameController,
-          ),
-          SizedBox(
-            height: 24,
-          ),
-          Row(
-            children: [
-              SizedBox(
-                width: 24,
-              ),
-              Container(
-                width: size.width / 2 - 20,
-                height: 22,
-                child: Text(
-                  "Date of Birth",
-                  style: GoogleFonts.quicksand(
-                    textStyle: AppTextStyle.Body3,
+              Row(
+                children: [
+                  SizedBox(
+                    width: 24,
                   ),
-                ),
-              ),
-              Container(
-                width: size.width / 2 - 30,
-                height: 22,
-                child: Text(
-                  "Gender",
-                  style: GoogleFonts.quicksand(
-                    textStyle: AppTextStyle.Body3,
+                  Text(
+                    "Full Name",
+                    style: GoogleFonts.quicksand(
+                      textStyle: AppTextStyle.Body3,
+                    ),
                   ),
-                ),
-              )
+                ],
+              ),
+              SizedBox(
+                height: 8,
+              ),
+              TextFieldInput(
+                validator: (String? inputVal) {
+                  if (inputVal!.length < 6)
+                    return 'Full Name must be at least 3 characters';
+                  return null;
+                },
+                size: size,
+                textEditingController: _nameController,
+              ),
+              SizedBox(
+                height: 24,
+              ),
+              Row(
+                children: [
+                  SizedBox(
+                    width: 24,
+                  ),
+                  Text(
+                    "User Name",
+                    style: GoogleFonts.quicksand(
+                      textStyle: AppTextStyle.Body3,
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(
+                height: 8,
+              ),
+              TextFieldInput(
+                validator: (String? inputVal) {
+                  if (inputVal!.length < 6)
+                    return 'User Name must be at least 3 characters';
+                  return null;
+                },
+                size: size,
+                textEditingController: _usernameController,
+              ),
+              SizedBox(
+                height: 24,
+              ),
+              Row(
+                children: [
+                  SizedBox(
+                    width: 24,
+                  ),
+                  Container(
+                    width: size.width / 2 - 20,
+                    height: 22,
+                    child: Text(
+                      "Date of Birth",
+                      style: GoogleFonts.quicksand(
+                        textStyle: AppTextStyle.Body3,
+                      ),
+                    ),
+                  ),
+                  Container(
+                    width: size.width / 2 - 30,
+                    height: 22,
+                    child: Text(
+                      "Gender",
+                      style: GoogleFonts.quicksand(
+                        textStyle: AppTextStyle.Body3,
+                      ),
+                    ),
+                  )
+                ],
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  SizedBox(
+                    width: 24,
+                  ),
+                  DatePickerButton(context),
+                  SizedBox(
+                    width: 10,
+                  ),
+                  SexDropdownButton(size),
+                ],
+              ),
+              SizedBox(
+                height: 24,
+              ),
+              Row(
+                children: [
+                  SizedBox(
+                    width: 24,
+                  ),
+                  Text(
+                    "Phone number",
+                    style: GoogleFonts.quicksand(
+                      textStyle: AppTextStyle.Body3,
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(
+                height: 8,
+              ),
+              TextFieldInput(
+                validator: (String? inputVal) {
+                  if (inputVal!.length < 10)
+                    return 'Phone must be at least 10 characters';
+                  return null;
+                },
+                size: size,
+                textEditingController: _phoneEditingController,
+              ),
+              SizedBox(
+                height: 24,
+              ),
+              Row(
+                children: [
+                  SizedBox(
+                    width: 24,
+                  ),
+                  Text(
+                    "About",
+                    style: GoogleFonts.quicksand(
+                      textStyle: AppTextStyle.Body3,
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(
+                height: 8,
+              ),
+              TextFieldInput(
+                validator: (String? inputVal) {
+                  if (inputVal!.length < 6)
+                    return 'about must be at least 3 characters';
+                  return null;
+                },
+                size: size,
+                textEditingController: _aboutEditingController,
+              ),
+              SizedBox(
+                height: 24,
+              ),
+              signUpAuthButton(context, "Confirm"),
             ],
           ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              SizedBox(
-                width: 24,
-              ),
-              DatePickerButton(context),
-              SizedBox(
-                width: 10,
-              ),
-              SexDropdownButton(size),
-            ],
-          ),
-          SizedBox(
-            height: 24,
-          ),
-          Row(
-            children: [
-              SizedBox(
-                width: 24,
-              ),
-              Text(
-                "Phone number",
-                style: GoogleFonts.quicksand(
-                  textStyle: AppTextStyle.Body3,
-                ),
-              ),
-            ],
-          ),
-          SizedBox(
-            height: 8,
-          ),
-          PhoneTextField(size),
-          SizedBox(
-            height: 24,
-          ),
-          Row(
-            children: [
-              SizedBox(
-                width: 24,
-              ),
-              Text(
-                "About",
-                style: GoogleFonts.quicksand(
-                  textStyle: AppTextStyle.Body3,
-                ),
-              ),
-            ],
-          ),
-          SizedBox(
-            height: 8,
-          ),
-          TextFieldInput(
-            validator: (String? inputVal) {
-              if (inputVal!.length < 6)
-                return 'about must be at least 3 characters';
-              return null;
-            },
-            size: size,
-            textEditingController: aboutEditingController,
-          ),
-        ]),
-      ),
-    );
-  }
-
-  Container PhoneTextField(Size size) {
-    return Container(
-      margin: EdgeInsets.only(left: 24, right: 24),
-      width: size.width,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(7),
-        color: AppColors.grey3.withAlpha(50),
-      ),
-      child: Padding(
-        padding: const EdgeInsets.only(left: 16),
-        child: TextFormField(
-          cursorColor: AppColors.red,
-          controller: phoneEditingController,
-          decoration: InputDecoration(
-            hintStyle: TextStyle(color: AppColors.black),
-            border: InputBorder.none,
-          ),
-          inputFormatters: [maskFormatter],
         ),
       ),
     );
@@ -367,6 +377,87 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
           date = newDate;
         });
       },
+    );
+  }
+
+  Widget signUpAuthButton(BuildContext context, String buttonName) {
+    return Padding(
+      padding: const EdgeInsets.only(left: 24.0, right: 24.0),
+      child: ElevatedButton(
+        style: ElevatedButton.styleFrom(
+            minimumSize: Size(MediaQuery.of(context).size.width, 48.0),
+            elevation: 5.0,
+            primary: AppColors.red,
+            padding: EdgeInsets.only(
+              left: 20.0,
+              right: 20.0,
+              top: 7.0,
+              bottom: 7.0,
+            ),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.all(Radius.circular(16.0)),
+            )),
+        child: Text(
+          buttonName,
+          style: GoogleFonts.quicksand(
+            color: AppColors.white,
+            textStyle: AppTextStyle.Button1,
+          ),
+        ),
+        onPressed: () async {
+          if (_EditKey.currentState!.validate()) {
+            print('Validated');
+            if (mounted) {
+              setState(() {
+                this._isLoading = true;
+              });
+            }
+
+            String msg = '';
+
+            final bool canRegisterNewUser = await _cloudStoreDataManagement
+                .checkThisUserAlreadyPresentOrNot(
+                    userName: this._usernameController.text);
+
+            if (!canRegisterNewUser)
+              msg = 'User Name Already Present';
+            else {
+              final bool _userEntryResponse =
+                  await _cloudStoreDataManagement.registerNewUser(
+                fullname: this._nameController.text,
+                userName: this._usernameController.text,
+                phone: this._phoneEditingController.text,
+                bio: this._aboutEditingController.text,
+                file: _image!,
+                male: selectedItem.toString(),
+                dateofbirth: date.toString(),
+              );
+
+              if (_userEntryResponse) {
+                msg = 'User data Entry Successfully';
+
+                /// Calling Local Databases Methods To Intitialize Local Database with required MEthods
+                Navigator.pushAndRemoveUntil(
+                    context,
+                    MaterialPageRoute(
+                      builder: (_) => MainScreen(),
+                    ),
+                    (route) => false);
+              } else
+                msg = 'User Data Not Entry Successfully';
+            }
+
+            showSnackBar(context, msg);
+            if (mounted) {
+              setState(() {
+                this._isLoading = true;
+              });
+            }
+          } else {
+            print('Not Validated');
+          }
+        },
+      ),
     );
   }
 }

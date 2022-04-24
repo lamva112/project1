@@ -7,7 +7,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 int initScreen = 0;
 
 Future<void> main() async {
-  WidgetsFlutterBinding.ensureInitialized();
+  WidgetsFlutterBinding();
+  await Firebase.initializeApp();
   SharedPreferences preferences = await SharedPreferences.getInstance();
   initScreen = (preferences.getInt('initScreen') ?? 0);
   await preferences.setInt('initScreen', 1);
