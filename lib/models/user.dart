@@ -51,7 +51,7 @@ class User {
       following: snapshot["following"],
       creation_date: snapshot["creation_date"],
       creation_time: snapshot["creation_time"],
-      phone: snapshot["phone"],
+      phone: snapshot["Phone"],
       token: snapshot["token"],
       total_connections: snapshot["total_connections"],
       activity: snapshot["activity"],

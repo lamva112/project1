@@ -4,11 +4,12 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:lottie/lottie.dart';
 import 'package:project1/resources/sign_up_auth.dart';
 
+import '../../../constants/reg_exp.dart';
 import '../../../utils/colors.dart';
 import '../../../utils/enum_generation.dart';
 import '../../../utils/fonts.dart';
 import '../../../utils/loading_widget.dart';
-import '../../constants/reg_exp.dart';
+
 import '../../profile/edit_profile_screen.dart';
 import '../components/comomAuthMethod.dart';
 import '../components/rounded_button.dart';

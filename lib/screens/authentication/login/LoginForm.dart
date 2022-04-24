@@ -5,10 +5,11 @@ import 'package:lottie/lottie.dart';
 import 'package:project1/utils/colors.dart';
 import 'package:project1/utils/enum_generation.dart';
 
+import '../../../constants/reg_exp.dart';
 import '../../../resources/sign_up_auth.dart';
 import '../../../utils/fonts.dart';
 import '../../../utils/loading_widget.dart';
-import '../../constants/reg_exp.dart';
+
 import '../../mainscreen/mainscreen.dart';
 import '../../profile/edit_profile_screen.dart';
 import '../components/comomAuthMethod.dart';
@@ -156,7 +157,7 @@ class _LoginFormState extends State<LoginForm> {
             if (emailSignInResults == EmailSignInResults.SignInCompleted) {
               Navigator.pushAndRemoveUntil(
                   context,
-                  MaterialPageRoute(builder: (_) => EditProfileScreen()),
+                  MaterialPageRoute(builder: (_) => MainScreen()),
                   (route) => false);
             } else if (emailSignInResults ==
                 EmailSignInResults.EmailNotVerified) {

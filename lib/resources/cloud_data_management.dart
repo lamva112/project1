@@ -12,13 +12,22 @@ class CloudStoreDataManagement {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
+  Future<model.User> getUserDetails() async {
+    User currentUser = _auth.currentUser!;
+
+    DocumentSnapshot documentSnapshot =
+        await _firestore.collection('users').doc(currentUser.uid).get();
+
+    return model.User.fromSnap(documentSnapshot);
+  }
+
   Future<bool> checkThisUserAlreadyPresentOrNot(
       {required String userName}) async {
     try {
       final QuerySnapshot<Map<String, dynamic>> findResults =
           await FirebaseFirestore.instance
               .collection(_collectionName)
-              .where('user_name', isEqualTo: userName)
+              .where('userName', isEqualTo: userName)
               .get();
 
       print('Debug 1: ${findResults.docs.isEmpty}');

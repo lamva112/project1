@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:project1/utils/colors.dart';
+import 'package:provider/provider.dart';
+
+import '../../post/feed_screen.dart';
+import '../../provider/user_provider.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({Key? key}) : super(key: key);
@@ -9,6 +13,18 @@ class MainScreen extends StatefulWidget {
 }
 
 class _MainScreenState extends State<MainScreen> {
+  @override
+  void initState() {
+    super.initState();
+    addData();
+  }
+
+  addData() async {
+    UserProvider _userProvider =
+        Provider.of<UserProvider>(context, listen: false);
+    await _userProvider.refreshUser();
+  }
+
   int index = 0;
 
   final screeen = [
@@ -24,12 +40,7 @@ class _MainScreenState extends State<MainScreen> {
         style: TextStyle(fontSize: 72),
       ),
     ),
-    Center(
-      child: Text(
-        'feed screen',
-        style: TextStyle(fontSize: 72),
-      ),
-    ),
+    FeedScreen(),
     Center(
       child: Text(
         'Messeger screen',
