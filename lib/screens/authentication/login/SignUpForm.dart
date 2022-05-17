@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lottie/lottie.dart';
 import 'package:project1/resources/sign_up_auth.dart';
+import 'package:project1/screens/authentication/login/login.dart';
 
 import '../../../constants/reg_exp.dart';
 import '../../../utils/colors.dart';
@@ -161,7 +162,7 @@ class _SignUpFormState extends State<SignUpForm> {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (_) => EditProfileScreen(),
+                  builder: (_) => LoginScreen(),
                 ),
               );
             } else {

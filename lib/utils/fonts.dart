@@ -31,7 +31,7 @@ class AppTextStyle {
     color: AppColors.black,
     fontSize: 24,
     fontStyle: FontStyle.normal,
-    fontWeight: FontWeight.w500,
+    fontWeight: FontWeight.w700,
   );
   static final Headline1 = TextStyle(
     color: AppColors.black,

@@ -1,9 +1,11 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:project1/utils/colors.dart';
 import 'package:provider/provider.dart';
 
 import '../../post/feed_screen.dart';
 import '../../provider/user_provider.dart';
+import '../profile/profile_screen.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({Key? key}) : super(key: key);
@@ -47,11 +49,8 @@ class _MainScreenState extends State<MainScreen> {
         style: TextStyle(fontSize: 72),
       ),
     ),
-    Center(
-      child: Text(
-        'Profile',
-        style: TextStyle(fontSize: 72),
-      ),
+    ProfileScreen(
+      uid: FirebaseAuth.instance.currentUser!.uid,
     ),
   ];
 

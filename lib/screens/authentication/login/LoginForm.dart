@@ -1,11 +1,14 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lottie/lottie.dart';
+import 'package:project1/screens/pet/petProfile.dart';
 import 'package:project1/utils/colors.dart';
 import 'package:project1/utils/enum_generation.dart';
 
 import '../../../constants/reg_exp.dart';
+import '../../../resources/cloud_data_management.dart';
 import '../../../resources/sign_up_auth.dart';
 import '../../../utils/fonts.dart';
 import '../../../utils/loading_widget.dart';
@@ -40,7 +43,8 @@ class _LoginFormState extends State<LoginForm> {
 
   final TextEditingController _email = TextEditingController();
   final TextEditingController _pwd = TextEditingController();
-
+  final CloudStoreDataManagement _cloudStoreDataManagement =
+      CloudStoreDataManagement();
   final EmailAndPasswordAuth _emailAndPasswordAuth = EmailAndPasswordAuth();
   bool _isLoading = false;
 
@@ -155,10 +159,23 @@ class _LoginFormState extends State<LoginForm> {
 
             String msg = '';
             if (emailSignInResults == EmailSignInResults.SignInCompleted) {
-              Navigator.pushAndRemoveUntil(
-                  context,
-                  MaterialPageRoute(builder: (_) => MainScreen()),
-                  (route) => false);
+              final bool _dataPresentResponse =
+                  await _cloudStoreDataManagement.userRecordPresentOrNot(
+                      uid: FirebaseAuth.instance.currentUser!.uid.toString());
+
+              _dataPresentResponse
+                  ? Navigator.pushAndRemoveUntil(
+                      context,
+                      MaterialPageRoute(
+                        builder: (_) => PetProfileScreen(),
+                      ),
+                      (route) => false)
+                  : Navigator.pushAndRemoveUntil(
+                      context,
+                      MaterialPageRoute(
+                        builder: (_) => EditProfileScreen(),
+                      ),
+                      (route) => false);
             } else if (emailSignInResults ==
                 EmailSignInResults.EmailNotVerified) {
               msg =

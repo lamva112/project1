@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:project1/post/feed_screen.dart';
 import 'package:provider/provider.dart';
 
 import '../provider/user_provider.dart';
@@ -27,32 +28,6 @@ class _AddPostScreenState extends State<AddPostScreen> {
   @override
   void initState() {
     super.initState();
-
-    getData();
-  }
-
-  getData() async {
-    setState(() {
-      isLoading = true;
-    });
-    try {
-      var userSnap = await FirebaseFirestore.instance
-          .collection('users')
-          .doc(FirebaseAuth.instance.currentUser!.uid)
-          .get();
-
-      userData = userSnap.data()!;
-
-      setState(() {});
-    } catch (e) {
-      showSnackBar(
-        context,
-        e.toString(),
-      );
-    }
-    setState(() {
-      isLoading = false;
-    });
   }
 
   _selectImage(BuildContext parentContext) async {
@@ -115,7 +90,7 @@ class _AddPostScreenState extends State<AddPostScreen> {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (_) => AddPostScreen(),
+              builder: (_) => FeedScreen(),
             ),
           );
         });
@@ -167,7 +142,8 @@ class _AddPostScreenState extends State<AddPostScreen> {
           )
         : Scaffold(
             appBar: AppBar(
-              backgroundColor: AppColors.blue,
+              elevation: 0,
+              backgroundColor: AppColors.white,
               leading: IconButton(
                 icon: const Icon(Icons.arrow_back),
                 onPressed: clearImage,

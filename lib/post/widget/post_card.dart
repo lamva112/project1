@@ -69,9 +69,17 @@ class _PostCardState extends State<PostCard> {
       // boundary needed for web
       decoration: BoxDecoration(
         border: Border.all(
-          color: Colors.green,
+          color: Colors.white,
         ),
-        color: Colors.green,
+        boxShadow: [
+          BoxShadow(
+            color: Colors.white12,
+            blurRadius: 8,
+            spreadRadius: 4,
+            offset: Offset(0, 10),
+          ),
+        ],
+        color: Colors.white,
       ),
       padding: const EdgeInsets.symmetric(
         vertical: 10,
@@ -292,7 +300,7 @@ class _PostCardState extends State<PostCard> {
                       'View all $commentLen comments',
                       style: const TextStyle(
                         fontSize: 16,
-                        color: Colors.grey,
+                        color: Colors.black,
                       ),
                     ),
                     padding: const EdgeInsets.symmetric(vertical: 4),
@@ -310,7 +318,7 @@ class _PostCardState extends State<PostCard> {
                     DateFormat.yMMMd()
                         .format(widget.snap['datePublished'].toDate()),
                     style: const TextStyle(
-                      color: Colors.grey,
+                      color: Colors.black,
                     ),
                   ),
                   padding: const EdgeInsets.symmetric(vertical: 4),

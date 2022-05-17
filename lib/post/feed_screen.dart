@@ -1,7 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:project1/screens/search/search_screen.dart';
+import 'package:project1/utils/colors.dart';
 
+import '../utils/fonts.dart';
+import '../utils/loading_widget.dart';
 import 'add_post_screen.dart';
 import 'widget/post_card.dart';
 
@@ -20,18 +25,34 @@ class _FeedScreenState extends State<FeedScreen> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        backgroundColor: Colors.amber,
+        elevation: 0,
+        backgroundColor: Colors.white,
         centerTitle: false,
-        title: SvgPicture.asset(
-          'assets/icons/ic_instagram.svg',
-          color: Colors.black,
-          height: 32,
+        title: Text(
+          "PetCare",
+          style: GoogleFonts.quicksand(
+            textStyle: AppTextStyle.Title5,
+          ),
         ),
         actions: [
           IconButton(
             icon: const Icon(
-              Icons.messenger_outline,
-              color: Colors.white,
+              Icons.search,
+              color: AppColors.black,
+            ),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (_) => SearchScreen(),
+                ),
+              );
+            },
+          ),
+          IconButton(
+            icon: const Icon(
+              Icons.add_a_photo_rounded,
+              color: AppColors.black,
             ),
             onPressed: () {
               Navigator.push(
@@ -49,11 +70,12 @@ class _FeedScreenState extends State<FeedScreen> {
         builder: (context,
             AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>> snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(
-              child: CircularProgressIndicator(),
-            );
+            return LoadingWidget();
           }
-          return ListView.builder(
+          return ListView.separated(
+            separatorBuilder: (BuildContext context, int index) => SizedBox(
+              height: 20,
+            ),
             itemCount: snapshot.data!.docs.length,
             itemBuilder: (ctx, index) => Container(
               margin: EdgeInsets.symmetric(

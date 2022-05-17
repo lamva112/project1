@@ -1,34 +1,32 @@
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
-
-import 'package:project1/screens/profile/widget.dart';
+import 'package:project1/screens/pet/vaccineinfomation.dart';
 
 import '../../resources/cloud_data_management.dart';
 import '../../utils/colors.dart';
 import '../../utils/fonts.dart';
 import '../../utils/loading_widget.dart';
 import '../../utils/utils.dart';
-import '../mainscreen/mainscreen.dart';
+import '../profile/widget.dart';
 
-class EditProfileScreen extends StatefulWidget {
-  EditProfileScreen({Key? key}) : super(key: key);
+class PetProfileScreen extends StatefulWidget {
+  PetProfileScreen({Key? key}) : super(key: key);
 
   @override
-  State<EditProfileScreen> createState() => _EditProfileScreenState();
+  State<PetProfileScreen> createState() => _PetProfileScreenState();
 }
 
-class _EditProfileScreenState extends State<EditProfileScreen> {
+class _PetProfileScreenState extends State<PetProfileScreen> {
   final GlobalKey<FormState> _EditKey = GlobalKey<FormState>();
-  final TextEditingController _nameController = TextEditingController();
-  final TextEditingController _usernameController = TextEditingController();
-  final TextEditingController _phoneEditingController = TextEditingController();
-  final TextEditingController _aboutEditingController = TextEditingController();
+  final TextEditingController _name = TextEditingController();
+  final TextEditingController _breed = TextEditingController();
+  final TextEditingController _color = TextEditingController();
   Uint8List? _image;
+
   final CloudStoreDataManagement _cloudStoreDataManagement =
       CloudStoreDataManagement();
 
@@ -40,7 +38,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     });
   }
 
-  List<String> items = ['Male', 'Female', 'other'];
+  List<String> items = ['Male', 'Female'];
   String? selectedItem = 'Male';
 
   DateTime date = DateTime(2022, 1, 1);
@@ -49,10 +47,9 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   @override
   void dispose() {
     super.dispose();
-    _nameController.dispose();
-    _usernameController.dispose();
-    _phoneEditingController.dispose();
-    _aboutEditingController.dispose();
+    _name.dispose();
+    _breed.dispose();
+    _color.dispose();
   }
 
   @override
@@ -60,6 +57,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     Size size = MediaQuery.of(context).size;
 
     return Scaffold(
+      backgroundColor: AppColors.grey6,
       body: SingleChildScrollView(
         child: Form(
           key: _EditKey,
@@ -85,7 +83,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                           width: 110,
                         ),
                         Text(
-                          "User profile",
+                          "Pet profile",
                           style: GoogleFonts.quicksand(
                             textStyle: AppTextStyle.Title2,
                           ),
@@ -95,46 +93,50 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                     SizedBox(
                       height: 16,
                     ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Stack(
-                          overflow: Overflow.visible,
-                          children: [
-                            _image != null
-                                ? ClipRRect(
-                                    borderRadius: BorderRadius.circular(16),
-                                    child: Image.memory(
-                                      _image!,
-                                      width: 159,
-                                      height: 159,
-                                      fit: BoxFit.cover,
-                                    ),
-                                  )
-                                : ClipRRect(
-                                    borderRadius: BorderRadius.circular(16),
-                                    child: Image.network(
-                                      'https://i.stack.imgur.com/l60Hf.png',
-                                      width: 159,
-                                      height: 159,
-                                      fit: BoxFit.cover,
+                    _isLoading
+                        ? LoadingWidget()
+                        : Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Stack(
+                                overflow: Overflow.visible,
+                                children: [
+                                  _image != null
+                                      ? ClipRRect(
+                                          borderRadius:
+                                              BorderRadius.circular(16),
+                                          child: Image.memory(
+                                            _image!,
+                                            width: 159,
+                                            height: 159,
+                                            fit: BoxFit.cover,
+                                          ),
+                                        )
+                                      : ClipRRect(
+                                          borderRadius:
+                                              BorderRadius.circular(16),
+                                          child: Image.network(
+                                            'https://i.stack.imgur.com/l60Hf.png',
+                                            width: 159,
+                                            height: 159,
+                                            fit: BoxFit.cover,
+                                          ),
+                                        ),
+                                  Positioned(
+                                    bottom: -25,
+                                    left: 55,
+                                    child: IconButton(
+                                      onPressed: selectImage,
+                                      icon: SvgPicture.asset(
+                                        'assets/images/camera.svg',
+                                        fit: BoxFit.cover,
+                                      ),
                                     ),
                                   ),
-                            Positioned(
-                              bottom: -25,
-                              left: 55,
-                              child: IconButton(
-                                onPressed: selectImage,
-                                icon: SvgPicture.asset(
-                                  'assets/images/camera.svg',
-                                  fit: BoxFit.cover,
-                                ),
+                                ],
                               ),
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
+                            ],
+                          ),
                     SizedBox(
                       height: 20,
                     ),
@@ -144,7 +146,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                           width: 24,
                         ),
                         Text(
-                          "Full Name",
+                          "Name",
                           style: GoogleFonts.quicksand(
                             textStyle: AppTextStyle.Body3,
                           ),
@@ -156,12 +158,12 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                     ),
                     TextFieldInput(
                       validator: (String? inputVal) {
-                        if (inputVal!.length < 6)
+                        if (inputVal!.length < 3)
                           return 'Full Name must be at least 3 characters';
                         return null;
                       },
                       size: size,
-                      textEditingController: _nameController,
+                      textEditingController: _name,
                     ),
                     SizedBox(
                       height: 24,
@@ -172,7 +174,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                           width: 24,
                         ),
                         Text(
-                          "User Name",
+                          "Breed",
                           style: GoogleFonts.quicksand(
                             textStyle: AppTextStyle.Body3,
                           ),
@@ -189,50 +191,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                         return null;
                       },
                       size: size,
-                      textEditingController: _usernameController,
-                    ),
-                    SizedBox(
-                      height: 24,
-                    ),
-                    Row(
-                      children: [
-                        SizedBox(
-                          width: 24,
-                        ),
-                        Container(
-                          width: size.width / 2 - 20,
-                          height: 22,
-                          child: Text(
-                            "Date of Birth",
-                            style: GoogleFonts.quicksand(
-                              textStyle: AppTextStyle.Body3,
-                            ),
-                          ),
-                        ),
-                        Container(
-                          width: size.width / 2 - 30,
-                          height: 22,
-                          child: Text(
-                            "Gender",
-                            style: GoogleFonts.quicksand(
-                              textStyle: AppTextStyle.Body3,
-                            ),
-                          ),
-                        )
-                      ],
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        SizedBox(
-                          width: 24,
-                        ),
-                        DatePickerButton(context),
-                        SizedBox(
-                          width: 10,
-                        ),
-                        SexDropdownButton(size),
-                      ],
+                      textEditingController: _breed,
                     ),
                     SizedBox(
                       height: 24,
@@ -243,7 +202,27 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                           width: 24,
                         ),
                         Text(
-                          "Phone number",
+                          "Gender",
+                          style: GoogleFonts.quicksand(
+                            textStyle: AppTextStyle.Body3,
+                          ),
+                        ),
+                      ],
+                    ),
+                    SizedBox(
+                      height: 8,
+                    ),
+                    SexDropdownButton(size),
+                    SizedBox(
+                      height: 24,
+                    ),
+                    Row(
+                      children: [
+                        SizedBox(
+                          width: 24,
+                        ),
+                        Text(
+                          "Color",
                           style: GoogleFonts.quicksand(
                             textStyle: AppTextStyle.Body3,
                           ),
@@ -255,12 +234,12 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                     ),
                     TextFieldInput(
                       validator: (String? inputVal) {
-                        if (inputVal!.length < 10)
-                          return 'Phone must be at least 10 characters';
+                        if (inputVal!.length < 1)
+                          return 'Colors cannot be empty';
                         return null;
                       },
                       size: size,
-                      textEditingController: _phoneEditingController,
+                      textEditingController: _color,
                     ),
                     SizedBox(
                       height: 24,
@@ -271,7 +250,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                           width: 24,
                         ),
                         Text(
-                          "About",
+                          "Birthday",
                           style: GoogleFonts.quicksand(
                             textStyle: AppTextStyle.Body3,
                           ),
@@ -281,15 +260,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                     SizedBox(
                       height: 8,
                     ),
-                    TextFieldInput(
-                      validator: (String? inputVal) {
-                        if (inputVal!.length < 6)
-                          return 'about must be at least 3 characters';
-                        return null;
-                      },
-                      size: size,
-                      textEditingController: _aboutEditingController,
-                    ),
+                    DatePickerButton(context),
                     SizedBox(
                       height: 24,
                     ),
@@ -303,8 +274,8 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
 
   Container SexDropdownButton(Size size) {
     return Container(
-      margin: EdgeInsets.only(left: 0, right: 0),
-      width: size.width / 2 - 30,
+      margin: EdgeInsets.only(left: 24, right: 24),
+      width: size.width,
       height: 48.0,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(7),
@@ -345,44 +316,47 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   }
 
   Widget DatePickerButton(BuildContext context) {
-    return ElevatedButton(
-      style: ElevatedButton.styleFrom(
-          minimumSize: Size(MediaQuery.of(context).size.width / 2 - 30, 48.0),
-          elevation: 0.0,
-          primary: AppColors.grey5,
-          padding: EdgeInsets.only(
-            left: 20.0,
-            right: 20.0,
-            top: 7.0,
-            bottom: 7.0,
+    return Container(
+      margin: EdgeInsets.only(left: 24, right: 24),
+      child: ElevatedButton(
+        style: ElevatedButton.styleFrom(
+            minimumSize: Size(MediaQuery.of(context).size.width, 48.0),
+            elevation: 0.0,
+            primary: AppColors.grey5,
+            padding: EdgeInsets.only(
+              left: 20.0,
+              right: 20.0,
+              top: 7.0,
+              bottom: 7.0,
+            ),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.all(Radius.circular(7.0)),
+            )),
+        child: Text(
+          '${date.day}/${date.month}/${date.year}',
+          style: GoogleFonts.quicksand(
+            textStyle: AppTextStyle.Button1,
           ),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.all(Radius.circular(7.0)),
-          )),
-      child: Text(
-        '${date.day}/${date.month}/${date.year}',
-        style: GoogleFonts.quicksand(
-          textStyle: AppTextStyle.Button1,
         ),
-      ),
-      onPressed: () async {
-        DateTime? newDate = await showDatePicker(
-            context: context,
-            initialDate: date,
-            firstDate: DateTime(1900),
-            lastDate: DateTime(2100));
-        if (newDate == null) return;
+        onPressed: () async {
+          DateTime? newDate = await showDatePicker(
+              context: context,
+              initialDate: date,
+              firstDate: DateTime(1900),
+              lastDate: DateTime(2100));
+          if (newDate == null) return;
 
-        setState(() {
-          date = newDate;
-        });
-      },
+          setState(() {
+            date = newDate;
+          });
+        },
+      ),
     );
   }
 
   Widget signUpAuthButton(BuildContext context, String buttonName) {
-    return Padding(
-      padding: const EdgeInsets.only(left: 24.0, right: 24.0),
+    return Container(
+      margin: EdgeInsets.only(left: 24, right: 24),
       child: ElevatedButton(
         style: ElevatedButton.styleFrom(
             minimumSize: Size(MediaQuery.of(context).size.width, 48.0),
@@ -412,44 +386,35 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                 this._isLoading = true;
               });
             }
-
             String msg = '';
+            final bool _userEntryResponse =
+                await _cloudStoreDataManagement.registerNewPet(
+              name: this._name.text,
+              breed: this._breed.text,
+              gender: selectedItem.toString(),
+              color: this._color.text,
+              dateofbrith: date.toString(),
+              file: _image!,
+            );
 
-            final bool doesUserExist = await _cloudStoreDataManagement
-                .checkThisUser(userName: _usernameController.text);
+            if (_userEntryResponse) {
+              msg = 'User data Entry Successfully';
 
-            if (doesUserExist == true) {
-              msg = 'User Name Already Present';
-            } else {
-              final bool _userEntryResponse =
-                  await _cloudStoreDataManagement.registerNewUser(
-                fullname: this._nameController.text,
-                userName: this._usernameController.text,
-                phone: this._phoneEditingController.text,
-                bio: this._aboutEditingController.text,
-                file: _image!,
-                male: selectedItem.toString(),
-                dateofbirth: date.toString(),
-              );
-
-              if (_userEntryResponse) {
-                msg = 'User data Entry Successfully';
-
-                /// Calling Local Databases Methods To Intitialize Local Database with required MEthods
-                Navigator.pushAndRemoveUntil(
-                    context,
-                    MaterialPageRoute(
-                      builder: (_) => MainScreen(),
+              /// Calling Local Databases Methods To Intitialize Local Database with required MEthods
+              Navigator.pushAndRemoveUntil(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) => VacctioninfomationScreen(
+                      petname: _name.text,
                     ),
-                    (route) => false);
-              } else
-                msg = 'User Data Not Entry Successfully';
-            }
+                  ),
+                  (route) => false);
+            } else
+              msg = 'User Data Not Entry Successfully';
 
-            showSnackBar(context, msg);
             if (mounted) {
               setState(() {
-                this._isLoading = true;
+                this._isLoading = false;
               });
             }
           } else {
