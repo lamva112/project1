@@ -12,7 +12,7 @@ class onboardingScreen3 extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AnnotatedRegion(
-      value: SystemUiOverlayStyle(
+      value: const SystemUiOverlayStyle(
           statusBarBrightness: Brightness.dark,
           statusBarIconBrightness: Brightness.light,
           statusBarColor: Colors.transparent),
@@ -20,14 +20,14 @@ class onboardingScreen3 extends StatelessWidget {
         body: Container(
           color: AppColors.white,
           child: Column(children: [
-            SizedBox(
+            const SizedBox(
               height: 82,
             ),
             Container(
               alignment: Alignment.topCenter,
               child: Image.asset(obDocumentFile, scale: 1),
             ),
-            SizedBox(
+            const SizedBox(
               height: 35,
             ),
             Text(
@@ -36,7 +36,7 @@ class onboardingScreen3 extends StatelessWidget {
                 textStyle: AppTextStyle.Title1,
               ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 17,
             ),
             Text(

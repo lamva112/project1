@@ -11,11 +11,7 @@ import '../../../utils/enum_generation.dart';
 import '../../../utils/fonts.dart';
 import '../../../utils/loading_widget.dart';
 
-import '../../profile/edit_profile_screen.dart';
 import '../components/comomAuthMethod.dart';
-import '../components/rounded_button.dart';
-import '../components/rounded_input.dart';
-import '../components/rounded_password_input.dart';
 
 class SignUpForm extends StatefulWidget {
   const SignUpForm({
@@ -58,11 +54,11 @@ class _SignUpFormState extends State<SignUpForm> {
           child: SingleChildScrollView(
             child: Form(
               key: _signUpKey,
-              child: Container(
+              child: SizedBox(
                 width: widget.size.width,
                 height: widget.defaultLoginSize,
                 child: _isLoading
-                    ? LoadingWidget()
+                    ? const LoadingWidget()
                     : Column(
                         crossAxisAlignment: CrossAxisAlignment.center,
                         mainAxisAlignment: MainAxisAlignment.center,
@@ -84,33 +80,37 @@ class _SignUpFormState extends State<SignUpForm> {
                                 hintText: 'Email',
                                 sizeiput: sizeinput,
                                 validator: (String? inputVal) {
-                                  if (!emailRegex.hasMatch(inputVal.toString()))
+                                  if (!emailRegex.hasMatch(inputVal.toString())) {
                                     return 'Email format is not matching';
+                                  }
                                   return null;
                                 },
-                                textEditingController: this._email,
+                                textEditingController: _email,
                                 icon: Icons.email),
                             PasswordTextFormField(
                                 hintText: 'Password',
                                 sizeiput: sizeinput,
                                 validator: (String? inputVal) {
-                                  if (inputVal!.length < 6)
+                                  if (inputVal!.length < 6) {
                                     return 'Password must be at least 6 characters';
+                                  }
                                   return null;
                                 },
-                                textEditingController: this._pwd,
+                                textEditingController: _pwd,
                                 icon: Icons.lock),
                             PasswordTextFormField(
                                 hintText: 'Conform Password',
                                 sizeiput: sizeinput,
                                 validator: (String? inputVal) {
-                                  if (inputVal!.length < 6)
+                                  if (inputVal!.length < 6) {
                                     return 'Password must be at least 6 characters';
-                                  if (this._pwd.text != this._conformPwd.text)
+                                  }
+                                  if (_pwd.text != _conformPwd.text) {
                                     return 'Password and Conform Password Not Same Here';
+                                  }
                                   return null;
                                 },
-                                textEditingController: this._conformPwd,
+                                textEditingController: _conformPwd,
                                 icon: Icons.lock),
                             signUpAuthButton(context, "Sign Up"),
                           ]),
@@ -130,13 +130,13 @@ class _SignUpFormState extends State<SignUpForm> {
             minimumSize: Size(MediaQuery.of(context).size.width - 10, 40.0),
             elevation: 5.0,
             primary: AppColors.blue,
-            padding: EdgeInsets.only(
+            padding: const EdgeInsets.only(
               left: 20.0,
               right: 20.0,
               top: 7.0,
               bottom: 7.0,
             ),
-            shape: RoundedRectangleBorder(
+            shape: const RoundedRectangleBorder(
               borderRadius: BorderRadius.all(Radius.circular(20.0)),
             )),
         child: Text(
@@ -150,7 +150,7 @@ class _SignUpFormState extends State<SignUpForm> {
             print('Validated');
             if (mounted) {
               setState(() {
-                this._isLoading = true;
+                _isLoading = true;
               });
             }
             SystemChannels.textInput.invokeMethod('TextInput.hide');
@@ -162,7 +162,7 @@ class _SignUpFormState extends State<SignUpForm> {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (_) => LoginScreen(),
+                  builder: (_) => const LoginScreen(),
                 ),
               );
             } else {
@@ -181,7 +181,7 @@ class _SignUpFormState extends State<SignUpForm> {
           }
           if (mounted) {
             setState(() {
-              this._isLoading = false;
+              _isLoading = false;
             });
           }
         },

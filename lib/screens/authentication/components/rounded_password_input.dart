@@ -18,7 +18,7 @@ class RoundedPasswordInput extends StatelessWidget {
         cursorColor: AppColors.red,
         obscureText: true,
         decoration: InputDecoration(
-          icon: Icon(
+          icon: const Icon(
             Icons.lock,
             color: AppColors.blue,
           ),

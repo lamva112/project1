@@ -9,7 +9,7 @@ Widget InputTextFormField(
     required Size size,
     required double padding}) {
   return Container(
-    margin: EdgeInsets.only(left: 32, right: 32),
+    margin: const EdgeInsets.only(left: 32, right: 32),
     width: size.width,
     decoration: BoxDecoration(
       borderRadius: BorderRadius.circular(4),
@@ -19,16 +19,16 @@ Widget InputTextFormField(
       cursorColor: AppColors.grey1,
       controller: textEditingController,
       keyboardType: TextInputType.emailAddress,
-      autofillHints: [AutofillHints.email],
+      autofillHints: const [AutofillHints.email],
       // decoration: InputDecoration(
       //   hintText: hintText,
       //   hintStyle: TextStyle(color: AppColors.grey1),
       //   border: InputBorder.none,
       // ),
       decoration: InputDecoration(
-        contentPadding: EdgeInsets.only(left: 8, right: 8),
+        contentPadding: const EdgeInsets.only(left: 8, right: 8),
         hintStyle: GoogleFonts.poppins(
-          textStyle: TextStyle(
+          textStyle: const TextStyle(
             fontSize: 12,
             fontWeight: FontWeight.w400,
             color: AppColors.grey1,
@@ -40,7 +40,7 @@ Widget InputTextFormField(
           borderSide: BorderSide.none,
           borderRadius: BorderRadius.circular(8.0),
         ),
-        errorStyle: TextStyle(
+        errorStyle: const TextStyle(
           color: Colors.transparent,
           fontSize: 0,
           height: 0,

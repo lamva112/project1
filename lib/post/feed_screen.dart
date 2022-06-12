@@ -1,6 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:project1/screens/search/search_screen.dart';
 import 'package:project1/utils/colors.dart';
@@ -44,7 +43,7 @@ class _FeedScreenState extends State<FeedScreen> {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (_) => SearchScreen(),
+                  builder: (_) => const SearchScreen(),
                 ),
               );
             },
@@ -58,7 +57,7 @@ class _FeedScreenState extends State<FeedScreen> {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (_) => AddPostScreen(),
+                  builder: (_) => const AddPostScreen(),
                 ),
               );
             },
@@ -70,15 +69,15 @@ class _FeedScreenState extends State<FeedScreen> {
         builder: (context,
             AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>> snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return LoadingWidget();
+            return const LoadingWidget();
           }
           return ListView.separated(
-            separatorBuilder: (BuildContext context, int index) => SizedBox(
+            separatorBuilder: (BuildContext context, int index) => const SizedBox(
               height: 20,
             ),
             itemCount: snapshot.data!.docs.length,
             itemBuilder: (ctx, index) => Container(
-              margin: EdgeInsets.symmetric(
+              margin: const EdgeInsets.symmetric(
                 horizontal: 0,
                 vertical: 0,
               ),

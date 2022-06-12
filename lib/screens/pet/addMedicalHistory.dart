@@ -12,7 +12,7 @@ import '../profile/widget.dart';
 
 class AddMedicalHistoryScreen extends StatefulWidget {
   final String petname;
-  AddMedicalHistoryScreen({Key? key, required this.petname}) : super(key: key);
+  const AddMedicalHistoryScreen({Key? key, required this.petname}) : super(key: key);
 
   @override
   State<AddMedicalHistoryScreen> createState() =>
@@ -44,25 +44,25 @@ class _AddMedicalHistoryScreenState extends State<AddMedicalHistoryScreen> {
       body: Form(
         key: _medicalKey,
         child: _isLoading
-            ? Center(child: LoadingWidget())
+            ? const Center(child: LoadingWidget())
             : Container(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    SizedBox(
+                    const SizedBox(
                       height: 51,
                     ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
-                        SizedBox(
+                        const SizedBox(
                           width: 16,
                         ),
                         SvgPicture.asset(
                           'assets/images/Vector.svg',
                           height: 24,
                         ),
-                        SizedBox(
+                        const SizedBox(
                           width: 65,
                         ),
                         Text(
@@ -73,12 +73,12 @@ class _AddMedicalHistoryScreenState extends State<AddMedicalHistoryScreen> {
                         ),
                       ],
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 38,
                     ),
                     Row(
                       children: [
-                        SizedBox(
+                        const SizedBox(
                           width: 24,
                         ),
                         Text(
@@ -89,24 +89,25 @@ class _AddMedicalHistoryScreenState extends State<AddMedicalHistoryScreen> {
                         ),
                       ],
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 8,
                     ),
                     TextFieldInput(
                       validator: (String? inputVal) {
-                        if (inputVal!.length < 3)
+                        if (inputVal!.length < 3) {
                           return 'Name Of Disease must be at least 3 characters';
+                        }
                         return null;
                       },
                       size: size,
                       textEditingController: _name,
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 32,
                     ),
                     Row(
                       children: [
-                        SizedBox(
+                        const SizedBox(
                           width: 24,
                         ),
                         Text(
@@ -117,7 +118,7 @@ class _AddMedicalHistoryScreenState extends State<AddMedicalHistoryScreen> {
                         ),
                       ],
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 8,
                     ),
                     InJectDropdownButton(size),
@@ -131,7 +132,7 @@ class _AddMedicalHistoryScreenState extends State<AddMedicalHistoryScreen> {
 
   Container InJectDropdownButton(Size size) {
     return Container(
-      margin: EdgeInsets.only(left: 24, right: 24),
+      margin: const EdgeInsets.only(left: 24, right: 24),
       width: size.width,
       height: 48.0,
       decoration: BoxDecoration(
@@ -180,13 +181,13 @@ class _AddMedicalHistoryScreenState extends State<AddMedicalHistoryScreen> {
             minimumSize: Size(MediaQuery.of(context).size.width, 48.0),
             elevation: 5.0,
             primary: AppColors.red,
-            padding: EdgeInsets.only(
+            padding: const EdgeInsets.only(
               left: 20.0,
               right: 20.0,
               top: 7.0,
               bottom: 7.0,
             ),
-            shape: RoundedRectangleBorder(
+            shape: const RoundedRectangleBorder(
               borderRadius: BorderRadius.all(Radius.circular(16.0)),
             )),
         child: Text(
@@ -202,7 +203,7 @@ class _AddMedicalHistoryScreenState extends State<AddMedicalHistoryScreen> {
 
             if (mounted) {
               setState(() {
-                this._isLoading = true;
+                _isLoading = true;
               });
             }
 
@@ -226,13 +227,14 @@ class _AddMedicalHistoryScreenState extends State<AddMedicalHistoryScreen> {
                     ),
                   ),
                   (route) => false);
-            } else
+            } else {
               msg = 'User Data Not Entry Successfully';
+            }
           } else {
             print('Not Validated');
             if (mounted) {
               setState(() {
-                this._isLoading = false;
+                _isLoading = false;
               });
             }
           }

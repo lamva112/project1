@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -10,7 +11,8 @@ import '../../utils/fonts.dart';
 
 class VacctioninfomationScreen extends StatefulWidget {
   final String petname;
-  VacctioninfomationScreen({Key? key, required this.petname}) : super(key: key);
+  const VacctioninfomationScreen({Key? key, required this.petname})
+      : super(key: key);
 
   @override
   State<VacctioninfomationScreen> createState() =>
@@ -19,6 +21,13 @@ class VacctioninfomationScreen extends StatefulWidget {
 
 class _VacctioninfomationScreenState extends State<VacctioninfomationScreen> {
   @override
+  void initState() {
+    super.initState();
+  }
+
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+
+  @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
@@ -26,20 +35,20 @@ class _VacctioninfomationScreenState extends State<VacctioninfomationScreen> {
       body: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          SizedBox(
+          const SizedBox(
             height: 40,
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              SizedBox(
+              const SizedBox(
                 width: 16,
               ),
               SvgPicture.asset(
                 'assets/images/Vector.svg',
                 height: 24,
               ),
-              SizedBox(
+              const SizedBox(
                 width: 65,
               ),
               Text(
@@ -50,14 +59,14 @@ class _VacctioninfomationScreenState extends State<VacctioninfomationScreen> {
               ),
             ],
           ),
-          SizedBox(
+          const SizedBox(
             height: 16,
           ),
           Container(
             child: StreamBuilder(
               stream: FirebaseFirestore.instance
                   .collection('pets')
-                  .doc(widget.petname)
+                  .doc(_auth.currentUser!.uid)
                   .collection('vaccines')
                   .snapshots(),
               builder: (context,
@@ -72,7 +81,7 @@ class _VacctioninfomationScreenState extends State<VacctioninfomationScreen> {
                   shrinkWrap: true,
                   itemBuilder: (context, position) {
                     return Container(
-                      margin: EdgeInsets.only(left: 28, right: 28),
+                      margin: const EdgeInsets.only(left: 28, right: 28),
                       width: size.width,
                       height: 56,
                       decoration: BoxDecoration(
@@ -110,7 +119,7 @@ class _VacctioninfomationScreenState extends State<VacctioninfomationScreen> {
                       ),
                     );
                   },
-                  separatorBuilder: (context, position) => SizedBox(
+                  separatorBuilder: (context, position) => const SizedBox(
                     height: 10,
                   ),
                   itemCount: snapshot.data!.docs.length,
@@ -118,7 +127,7 @@ class _VacctioninfomationScreenState extends State<VacctioninfomationScreen> {
               },
             ),
           ),
-          SizedBox(
+          const SizedBox(
             height: 8,
           ),
           InkWell(
@@ -132,14 +141,14 @@ class _VacctioninfomationScreenState extends State<VacctioninfomationScreen> {
                 (route) => false)),
             child: Row(
               children: [
-                SizedBox(
+                const SizedBox(
                   width: 24,
                 ),
                 SvgPicture.asset(
                   'assets/icons/addd.svg',
                   color: AppColors.black,
                 ),
-                SizedBox(
+                const SizedBox(
                   width: 8,
                 ),
                 Text(
@@ -166,13 +175,13 @@ class _VacctioninfomationScreenState extends State<VacctioninfomationScreen> {
             minimumSize: Size(MediaQuery.of(context).size.width, 48.0),
             elevation: 5.0,
             primary: AppColors.red,
-            padding: EdgeInsets.only(
+            padding: const EdgeInsets.only(
               left: 20.0,
               right: 20.0,
               top: 7.0,
               bottom: 7.0,
             ),
-            shape: RoundedRectangleBorder(
+            shape: const RoundedRectangleBorder(
               borderRadius: BorderRadius.all(Radius.circular(16.0)),
             )),
         child: Text(

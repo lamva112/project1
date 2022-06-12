@@ -12,7 +12,7 @@ class LoadingWidget extends StatelessWidget {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         mainAxisAlignment: MainAxisAlignment.center,
-        children: [
+        children: const [
           SpinKitSpinningLines(
             color: AppColors.red,
             size: 50.0,

@@ -43,7 +43,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
       // get post lENGTH
       var postSnap = await FirebaseFirestore.instance
           .collection('posts')
-          .where('uid', isEqualTo: FirebaseAuth.instance.currentUser!.uid)
+          .where(
+            'uid',
+            isEqualTo: FirebaseAuth.instance.currentUser!.email.toString(),
+          )
           .get();
 
       postLen = postSnap.docs.length;
@@ -52,7 +55,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       following = userSnap.data()!['following'].length;
       isFollowing = userSnap
           .data()!['followers']
-          .contains(FirebaseAuth.instance.currentUser!.uid);
+          .contains(FirebaseAuth.instance.currentUser!.email.toString());
       setState(() {});
     } catch (e) {
       showSnackBar(
@@ -73,7 +76,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
           )
         : Scaffold(
             appBar: AppBar(
-              backgroundColor: Color.fromRGBO(0, 0, 0, 1),
+              backgroundColor: const Color.fromRGBO(0, 0, 0, 1),
               title: Text(
                 userData['username'],
               ),
@@ -112,12 +115,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceEvenly,
                                   children: [
-                                    FirebaseAuth.instance.currentUser!.uid ==
+                                    FirebaseAuth.instance.currentUser!.email
+                                                .toString() ==
                                             widget.uid
                                         ? FollowButton(
                                             text: 'Sign Out',
                                             backgroundColor:
-                                                Color.fromRGBO(0, 0, 0, 1),
+                                                const Color.fromRGBO(
+                                                    0, 0, 0, 1),
                                             textColor: Colors.white,
                                             borderColor: Colors.grey,
                                             function: () async {
@@ -127,7 +132,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                   .pushReplacement(
                                                 MaterialPageRoute(
                                                   builder: (context) =>
-                                                      LoginScreen(),
+                                                      const LoginScreen(),
                                                 ),
                                               );
                                             },
@@ -142,8 +147,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                   await FireStoreMethods()
                                                       .followUser(
                                                     FirebaseAuth.instance
-                                                        .currentUser!.uid,
-                                                    userData['uid'],
+                                                        .currentUser!.email
+                                                        .toString(),
+                                                    userData['email'],
                                                   );
 
                                                   setState(() {
@@ -161,8 +167,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                   await FireStoreMethods()
                                                       .followUser(
                                                     FirebaseAuth.instance
-                                                        .currentUser!.uid,
-                                                    userData['uid'],
+                                                        .currentUser!.email
+                                                        .toString(),
+                                                    userData['email'],
                                                   );
 
                                                   setState(() {
@@ -184,8 +191,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           top: 15,
                         ),
                         child: Text(
-                          userData['username'],
-                          style: TextStyle(
+                          userData['email'],
+                          style: const TextStyle(
                             fontWeight: FontWeight.bold,
                           ),
                         ),

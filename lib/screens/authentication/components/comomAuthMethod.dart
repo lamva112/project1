@@ -8,8 +8,8 @@ Widget EmailTextFormField(
     required IconData icon,
     required Size sizeiput}) {
   return Container(
-    margin: EdgeInsets.symmetric(vertical: 10),
-    padding: EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+    margin: const EdgeInsets.symmetric(vertical: 10),
+    padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
     width: sizeiput.width,
     decoration: BoxDecoration(
       borderRadius: BorderRadius.circular(30),
@@ -25,7 +25,7 @@ Widget EmailTextFormField(
           color: AppColors.blue,
         ),
         hintText: hintText,
-        hintStyle: TextStyle(color: AppColors.black),
+        hintStyle: const TextStyle(color: AppColors.black),
         border: InputBorder.none,
       ),
     ),
@@ -39,8 +39,8 @@ Widget PasswordTextFormField(
     required IconData icon,
     required Size sizeiput}) {
   return Container(
-    margin: EdgeInsets.symmetric(vertical: 10),
-    padding: EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+    margin: const EdgeInsets.symmetric(vertical: 10),
+    padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
     width: sizeiput.width,
     decoration: BoxDecoration(
       borderRadius: BorderRadius.circular(30),
@@ -57,7 +57,7 @@ Widget PasswordTextFormField(
           color: AppColors.blue,
         ),
         hintText: hintText,
-        hintStyle: TextStyle(color: AppColors.black),
+        hintStyle: const TextStyle(color: AppColors.black),
         border: InputBorder.none,
       ),
     ),
@@ -67,7 +67,7 @@ Widget PasswordTextFormField(
 Widget socialMediaInterationButtons() {
   return Container(
     width: double.maxFinite,
-    padding: EdgeInsets.all(30),
+    padding: const EdgeInsets.all(30),
     child: Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
@@ -79,7 +79,7 @@ Widget socialMediaInterationButtons() {
             height: 70.0,
           ),
         ),
-        SizedBox(
+        const SizedBox(
           width: 60,
         ),
         GestureDetector(

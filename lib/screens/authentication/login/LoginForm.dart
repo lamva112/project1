@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lottie/lottie.dart';
-import 'package:project1/screens/pet/petProfile.dart';
 import 'package:project1/utils/colors.dart';
 import 'package:project1/utils/enum_generation.dart';
 
@@ -16,9 +15,6 @@ import '../../../utils/loading_widget.dart';
 import '../../mainscreen/mainscreen.dart';
 import '../../profile/edit_profile_screen.dart';
 import '../components/comomAuthMethod.dart';
-import '../components/rounded_button.dart';
-import '../components/rounded_input.dart';
-import '../components/rounded_password_input.dart';
 
 class LoginForm extends StatefulWidget {
   const LoginForm({
@@ -59,11 +55,11 @@ class _LoginFormState extends State<LoginForm> {
         child: SingleChildScrollView(
           child: Form(
             key: _logInKey,
-            child: Container(
+            child: SizedBox(
               width: widget.size.width,
               height: widget.defaultLoginSize,
               child: _isLoading
-                  ? LoadingWidget()
+                  ? const LoadingWidget()
                   : Column(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -87,28 +83,30 @@ class _LoginFormState extends State<LoginForm> {
                               textStyle: AppTextStyle.Subheadline1,
                             ),
                           ),
-                          SizedBox(
+                          const SizedBox(
                             height: 50,
                           ),
                           EmailTextFormField(
                               hintText: 'Email',
                               sizeiput: sizeinput,
                               validator: (String? inputVal) {
-                                if (!emailRegex.hasMatch(inputVal.toString()))
+                                if (!emailRegex.hasMatch(inputVal.toString())) {
                                   return 'Email format is not matching';
+                                }
                                 return null;
                               },
-                              textEditingController: this._email,
+                              textEditingController: _email,
                               icon: Icons.email),
                           PasswordTextFormField(
                               hintText: 'Password',
                               sizeiput: sizeinput,
                               validator: (String? inputVal) {
-                                if (inputVal!.length < 6)
+                                if (inputVal!.length < 6) {
                                   return 'Password must be at least 6 characters';
+                                }
                                 return null;
                               },
-                              textEditingController: this._pwd,
+                              textEditingController: _pwd,
                               icon: Icons.lock),
                           logInAuthButton(context, 'Sign In'),
                           socialMediaInterationButtons(),
@@ -128,13 +126,13 @@ class _LoginFormState extends State<LoginForm> {
             minimumSize: Size(MediaQuery.of(context).size.width - 10, 40.0),
             elevation: 5.0,
             primary: AppColors.blue,
-            padding: EdgeInsets.only(
+            padding: const EdgeInsets.only(
               left: 20.0,
               right: 20.0,
               top: 7.0,
               bottom: 7.0,
             ),
-            shape: RoundedRectangleBorder(
+            shape: const RoundedRectangleBorder(
               borderRadius: BorderRadius.all(Radius.circular(20.0)),
             )),
         child: Text(
@@ -144,36 +142,37 @@ class _LoginFormState extends State<LoginForm> {
           ),
         ),
         onPressed: () async {
-          if (this._logInKey.currentState!.validate()) {
+          if (_logInKey.currentState!.validate()) {
             print('Validated');
             SystemChannels.textInput.invokeMethod('TextInput.hide');
             if (mounted) {
               setState(() {
-                this._isLoading = true;
+                _isLoading = true;
               });
             }
 
             final EmailSignInResults emailSignInResults =
                 await _emailAndPasswordAuth.signInWithEmailAndPassword(
-                    email: this._email.text, pwd: this._pwd.text);
+                    email: _email.text, pwd: _pwd.text);
 
             String msg = '';
             if (emailSignInResults == EmailSignInResults.SignInCompleted) {
               final bool _dataPresentResponse =
                   await _cloudStoreDataManagement.userRecordPresentOrNot(
-                      uid: FirebaseAuth.instance.currentUser!.uid.toString());
+                uid: FirebaseAuth.instance.currentUser!.email.toString(),
+              );
 
               _dataPresentResponse
                   ? Navigator.pushAndRemoveUntil(
                       context,
                       MaterialPageRoute(
-                        builder: (_) => PetProfileScreen(),
+                        builder: (_) => const MainScreen(),
                       ),
                       (route) => false)
                   : Navigator.pushAndRemoveUntil(
                       context,
                       MaterialPageRoute(
-                        builder: (_) => EditProfileScreen(),
+                        builder: (_) => const EditProfileScreen(),
                       ),
                       (route) => false);
             } else if (emailSignInResults ==
@@ -181,20 +180,25 @@ class _LoginFormState extends State<LoginForm> {
               msg =
                   'Email not Verified.\nPlease Verify your email and then Log In';
             } else if (emailSignInResults ==
-                EmailSignInResults.EmailOrPasswordInvalid)
+                EmailSignInResults.EmailOrPasswordInvalid) {
               msg = 'Email And Password Invalid';
-            else
+            } else {
               msg = 'Sign In Not Completed';
+            }
 
-            if (msg != '')
-              ScaffoldMessenger.of(context)
-                  .showSnackBar(SnackBar(content: Text(msg)));
+            if (msg != '') {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text(msg),
+                ),
+              );
+            }
           } else {
             print('Not Validated');
           }
           if (mounted) {
             setState(() {
-              this._isLoading = false;
+              _isLoading = false;
             });
           }
         },

@@ -1,17 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:lottie/lottie.dart';
-import 'package:project1/screens/authentication/components/rounded_password_input.dart';
 import 'package:project1/utils/colors.dart';
 
-import '../components/rounded_button.dart';
-import '../components/rounded_input.dart';
 import 'LoginForm.dart';
 import 'SignUpForm.dart';
 
 class LoginScreen extends StatefulWidget {
-  LoginScreen({Key? key}) : super(key: key);
+  const LoginScreen({Key? key}) : super(key: key);
 
   @override
   State<LoginScreen> createState() => _LoginScreenState();
@@ -22,7 +18,7 @@ class _LoginScreenState extends State<LoginScreen>
   bool isLogin = true;
   late Animation<double> containerSize;
   late AnimationController animationController;
-  late Duration animationDuration = Duration(milliseconds: 270);
+  late Duration animationDuration = const Duration(milliseconds: 270);
 
   @override
   void initState() {
@@ -85,7 +81,7 @@ class _LoginScreenState extends State<LoginScreen>
               height: size.height * 0.1,
               alignment: Alignment.bottomCenter,
               child: IconButton(
-                icon: Icon(
+                icon: const Icon(
                   Icons.close,
                 ),
                 onPressed: () {
@@ -109,7 +105,7 @@ class _LoginScreenState extends State<LoginScreen>
       child: Container(
         width: double.infinity,
         height: containerSize.value,
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           borderRadius: BorderRadius.only(
             topLeft: Radius.circular(100),
             topRight: Radius.circular(100),
@@ -128,7 +124,7 @@ class _LoginScreenState extends State<LoginScreen>
               ? Text(
                   "Don't have an account? Sign up",
                   style: GoogleFonts.quicksand(
-                    textStyle: TextStyle(
+                    textStyle: const TextStyle(
                       color: AppColors.blue,
                       fontSize: 18,
                     ),

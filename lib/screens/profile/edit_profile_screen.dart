@@ -1,7 +1,7 @@
 import 'dart:typed_data';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
@@ -16,7 +16,7 @@ import '../../utils/utils.dart';
 import '../mainscreen/mainscreen.dart';
 
 class EditProfileScreen extends StatefulWidget {
-  EditProfileScreen({Key? key}) : super(key: key);
+  const EditProfileScreen({Key? key}) : super(key: key);
 
   @override
   State<EditProfileScreen> createState() => _EditProfileScreenState();
@@ -43,7 +43,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   List<String> items = ['Male', 'Female', 'other'];
   String? selectedItem = 'Male';
 
-  DateTime date = DateTime(2022, 1, 1);
+  DateTime date = DateTime.now();
   bool _isLoading = false;
 
   @override
@@ -64,24 +64,24 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
         child: Form(
           key: _EditKey,
           child: _isLoading
-              ? Center(child: LoadingWidget())
+              ? const Center(child: LoadingWidget())
               : Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    SizedBox(
+                    const SizedBox(
                       height: 51,
                     ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
-                        SizedBox(
+                        const SizedBox(
                           width: 16,
                         ),
                         SvgPicture.asset(
                           'assets/images/Vector.svg',
                           height: 24,
                         ),
-                        SizedBox(
+                        const SizedBox(
                           width: 110,
                         ),
                         Text(
@@ -92,14 +92,14 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                         ),
                       ],
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 16,
                     ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Stack(
-                          overflow: Overflow.visible,
+                          clipBehavior: Clip.none,
                           children: [
                             _image != null
                                 ? ClipRRect(
@@ -135,12 +135,12 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                         ),
                       ],
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 20,
                     ),
                     Row(
                       children: [
-                        SizedBox(
+                        const SizedBox(
                           width: 24,
                         ),
                         Text(
@@ -151,24 +151,25 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                         ),
                       ],
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 8,
                     ),
                     TextFieldInput(
                       validator: (String? inputVal) {
-                        if (inputVal!.length < 6)
+                        if (inputVal!.length < 6) {
                           return 'Full Name must be at least 3 characters';
+                        }
                         return null;
                       },
                       size: size,
                       textEditingController: _nameController,
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 24,
                     ),
                     Row(
                       children: [
-                        SizedBox(
+                        const SizedBox(
                           width: 24,
                         ),
                         Text(
@@ -179,27 +180,28 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                         ),
                       ],
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 8,
                     ),
                     TextFieldInput(
                       validator: (String? inputVal) {
-                        if (inputVal!.length < 6)
+                        if (inputVal!.length < 6) {
                           return 'User Name must be at least 3 characters';
+                        }
                         return null;
                       },
                       size: size,
                       textEditingController: _usernameController,
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 24,
                     ),
                     Row(
                       children: [
-                        SizedBox(
+                        const SizedBox(
                           width: 24,
                         ),
-                        Container(
+                        SizedBox(
                           width: size.width / 2 - 20,
                           height: 22,
                           child: Text(
@@ -209,7 +211,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                             ),
                           ),
                         ),
-                        Container(
+                        SizedBox(
                           width: size.width / 2 - 30,
                           height: 22,
                           child: Text(
@@ -224,22 +226,22 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
-                        SizedBox(
+                        const SizedBox(
                           width: 24,
                         ),
                         DatePickerButton(context),
-                        SizedBox(
+                        const SizedBox(
                           width: 10,
                         ),
                         SexDropdownButton(size),
                       ],
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 24,
                     ),
                     Row(
                       children: [
-                        SizedBox(
+                        const SizedBox(
                           width: 24,
                         ),
                         Text(
@@ -250,24 +252,25 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                         ),
                       ],
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 8,
                     ),
                     TextFieldInput(
                       validator: (String? inputVal) {
-                        if (inputVal!.length < 10)
+                        if (inputVal!.length < 10) {
                           return 'Phone must be at least 10 characters';
+                        }
                         return null;
                       },
                       size: size,
                       textEditingController: _phoneEditingController,
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 24,
                     ),
                     Row(
                       children: [
-                        SizedBox(
+                        const SizedBox(
                           width: 24,
                         ),
                         Text(
@@ -278,19 +281,20 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                         ),
                       ],
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 8,
                     ),
                     TextFieldInput(
                       validator: (String? inputVal) {
-                        if (inputVal!.length < 6)
+                        if (inputVal!.length < 6) {
                           return 'about must be at least 3 characters';
+                        }
                         return null;
                       },
                       size: size,
                       textEditingController: _aboutEditingController,
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 24,
                     ),
                     signUpAuthButton(context, "Confirm"),
@@ -303,7 +307,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
 
   Container SexDropdownButton(Size size) {
     return Container(
-      margin: EdgeInsets.only(left: 0, right: 0),
+      margin: const EdgeInsets.only(left: 0, right: 0),
       width: size.width / 2 - 30,
       height: 48.0,
       decoration: BoxDecoration(
@@ -350,13 +354,13 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
           minimumSize: Size(MediaQuery.of(context).size.width / 2 - 30, 48.0),
           elevation: 0.0,
           primary: AppColors.grey5,
-          padding: EdgeInsets.only(
+          padding: const EdgeInsets.only(
             left: 20.0,
             right: 20.0,
             top: 7.0,
             bottom: 7.0,
           ),
-          shape: RoundedRectangleBorder(
+          shape: const RoundedRectangleBorder(
             borderRadius: BorderRadius.all(Radius.circular(7.0)),
           )),
       child: Text(
@@ -388,13 +392,13 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
             minimumSize: Size(MediaQuery.of(context).size.width, 48.0),
             elevation: 5.0,
             primary: AppColors.red,
-            padding: EdgeInsets.only(
+            padding: const EdgeInsets.only(
               left: 20.0,
               right: 20.0,
               top: 7.0,
               bottom: 7.0,
             ),
-            shape: RoundedRectangleBorder(
+            shape: const RoundedRectangleBorder(
               borderRadius: BorderRadius.all(Radius.circular(16.0)),
             )),
         child: Text(
@@ -409,7 +413,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
             print('Validated');
             if (mounted) {
               setState(() {
-                this._isLoading = true;
+                _isLoading = true;
               });
             }
 
@@ -423,10 +427,10 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
             } else {
               final bool _userEntryResponse =
                   await _cloudStoreDataManagement.registerNewUser(
-                fullname: this._nameController.text,
-                userName: this._usernameController.text,
-                phone: this._phoneEditingController.text,
-                bio: this._aboutEditingController.text,
+                fullname: _nameController.text,
+                userName: _usernameController.text,
+                phone: _phoneEditingController.text,
+                bio: _aboutEditingController.text,
                 file: _image!,
                 male: selectedItem.toString(),
                 dateofbirth: date.toString(),
@@ -436,20 +440,22 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                 msg = 'User data Entry Successfully';
 
                 /// Calling Local Databases Methods To Intitialize Local Database with required MEthods
+
                 Navigator.pushAndRemoveUntil(
                     context,
                     MaterialPageRoute(
-                      builder: (_) => MainScreen(),
+                      builder: (_) => const MainScreen(),
                     ),
                     (route) => false);
-              } else
+              } else {
                 msg = 'User Data Not Entry Successfully';
+              }
             }
 
             showSnackBar(context, msg);
             if (mounted) {
               setState(() {
-                this._isLoading = true;
+                _isLoading = true;
               });
             }
           } else {

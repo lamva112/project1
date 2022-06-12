@@ -14,7 +14,7 @@ import '../../utils/utils.dart';
 import '../profile/widget.dart';
 
 class PetProfileScreen extends StatefulWidget {
-  PetProfileScreen({Key? key}) : super(key: key);
+  const PetProfileScreen({Key? key}) : super(key: key);
 
   @override
   State<PetProfileScreen> createState() => _PetProfileScreenState();
@@ -62,24 +62,24 @@ class _PetProfileScreenState extends State<PetProfileScreen> {
         child: Form(
           key: _EditKey,
           child: _isLoading
-              ? Center(child: LoadingWidget())
+              ? const Center(child: LoadingWidget())
               : Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    SizedBox(
+                    const SizedBox(
                       height: 51,
                     ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
-                        SizedBox(
+                        const SizedBox(
                           width: 16,
                         ),
                         SvgPicture.asset(
                           'assets/images/Vector.svg',
                           height: 24,
                         ),
-                        SizedBox(
+                        const SizedBox(
                           width: 110,
                         ),
                         Text(
@@ -90,17 +90,16 @@ class _PetProfileScreenState extends State<PetProfileScreen> {
                         ),
                       ],
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 16,
                     ),
                     _isLoading
-                        ? LoadingWidget()
+                        ? const LoadingWidget()
                         : Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               Stack(
-                                overflow: Overflow.visible,
-                                children: [
+                                clipBehavior: Clip.none, children: [
                                   _image != null
                                       ? ClipRRect(
                                           borderRadius:
@@ -137,12 +136,12 @@ class _PetProfileScreenState extends State<PetProfileScreen> {
                               ),
                             ],
                           ),
-                    SizedBox(
+                    const SizedBox(
                       height: 20,
                     ),
                     Row(
                       children: [
-                        SizedBox(
+                        const SizedBox(
                           width: 24,
                         ),
                         Text(
@@ -153,24 +152,25 @@ class _PetProfileScreenState extends State<PetProfileScreen> {
                         ),
                       ],
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 8,
                     ),
                     TextFieldInput(
                       validator: (String? inputVal) {
-                        if (inputVal!.length < 3)
+                        if (inputVal!.length < 3) {
                           return 'Full Name must be at least 3 characters';
+                        }
                         return null;
                       },
                       size: size,
                       textEditingController: _name,
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 24,
                     ),
                     Row(
                       children: [
-                        SizedBox(
+                        const SizedBox(
                           width: 24,
                         ),
                         Text(
@@ -181,24 +181,25 @@ class _PetProfileScreenState extends State<PetProfileScreen> {
                         ),
                       ],
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 8,
                     ),
                     TextFieldInput(
                       validator: (String? inputVal) {
-                        if (inputVal!.length < 6)
+                        if (inputVal!.length < 6) {
                           return 'User Name must be at least 3 characters';
+                        }
                         return null;
                       },
                       size: size,
                       textEditingController: _breed,
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 24,
                     ),
                     Row(
                       children: [
-                        SizedBox(
+                        const SizedBox(
                           width: 24,
                         ),
                         Text(
@@ -209,16 +210,16 @@ class _PetProfileScreenState extends State<PetProfileScreen> {
                         ),
                       ],
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 8,
                     ),
                     SexDropdownButton(size),
-                    SizedBox(
+                    const SizedBox(
                       height: 24,
                     ),
                     Row(
                       children: [
-                        SizedBox(
+                        const SizedBox(
                           width: 24,
                         ),
                         Text(
@@ -229,24 +230,25 @@ class _PetProfileScreenState extends State<PetProfileScreen> {
                         ),
                       ],
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 8,
                     ),
                     TextFieldInput(
                       validator: (String? inputVal) {
-                        if (inputVal!.length < 1)
+                        if (inputVal!.isEmpty) {
                           return 'Colors cannot be empty';
+                        }
                         return null;
                       },
                       size: size,
                       textEditingController: _color,
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 24,
                     ),
                     Row(
                       children: [
-                        SizedBox(
+                        const SizedBox(
                           width: 24,
                         ),
                         Text(
@@ -257,11 +259,11 @@ class _PetProfileScreenState extends State<PetProfileScreen> {
                         ),
                       ],
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 8,
                     ),
                     DatePickerButton(context),
-                    SizedBox(
+                    const SizedBox(
                       height: 24,
                     ),
                     signUpAuthButton(context, "Confirm"),
@@ -274,7 +276,7 @@ class _PetProfileScreenState extends State<PetProfileScreen> {
 
   Container SexDropdownButton(Size size) {
     return Container(
-      margin: EdgeInsets.only(left: 24, right: 24),
+      margin: const EdgeInsets.only(left: 24, right: 24),
       width: size.width,
       height: 48.0,
       decoration: BoxDecoration(
@@ -317,19 +319,19 @@ class _PetProfileScreenState extends State<PetProfileScreen> {
 
   Widget DatePickerButton(BuildContext context) {
     return Container(
-      margin: EdgeInsets.only(left: 24, right: 24),
+      margin: const EdgeInsets.only(left: 24, right: 24),
       child: ElevatedButton(
         style: ElevatedButton.styleFrom(
             minimumSize: Size(MediaQuery.of(context).size.width, 48.0),
             elevation: 0.0,
             primary: AppColors.grey5,
-            padding: EdgeInsets.only(
+            padding: const EdgeInsets.only(
               left: 20.0,
               right: 20.0,
               top: 7.0,
               bottom: 7.0,
             ),
-            shape: RoundedRectangleBorder(
+            shape: const RoundedRectangleBorder(
               borderRadius: BorderRadius.all(Radius.circular(7.0)),
             )),
         child: Text(
@@ -356,19 +358,19 @@ class _PetProfileScreenState extends State<PetProfileScreen> {
 
   Widget signUpAuthButton(BuildContext context, String buttonName) {
     return Container(
-      margin: EdgeInsets.only(left: 24, right: 24),
+      margin: const EdgeInsets.only(left: 24, right: 24),
       child: ElevatedButton(
         style: ElevatedButton.styleFrom(
             minimumSize: Size(MediaQuery.of(context).size.width, 48.0),
             elevation: 5.0,
             primary: AppColors.red,
-            padding: EdgeInsets.only(
+            padding: const EdgeInsets.only(
               left: 20.0,
               right: 20.0,
               top: 7.0,
               bottom: 7.0,
             ),
-            shape: RoundedRectangleBorder(
+            shape: const RoundedRectangleBorder(
               borderRadius: BorderRadius.all(Radius.circular(16.0)),
             )),
         child: Text(
@@ -383,16 +385,16 @@ class _PetProfileScreenState extends State<PetProfileScreen> {
             print('Validated');
             if (mounted) {
               setState(() {
-                this._isLoading = true;
+                _isLoading = true;
               });
             }
             String msg = '';
             final bool _userEntryResponse =
                 await _cloudStoreDataManagement.registerNewPet(
-              name: this._name.text,
-              breed: this._breed.text,
+              name: _name.text,
+              breed: _breed.text,
               gender: selectedItem.toString(),
-              color: this._color.text,
+              color: _color.text,
               dateofbrith: date.toString(),
               file: _image!,
             );
@@ -409,12 +411,13 @@ class _PetProfileScreenState extends State<PetProfileScreen> {
                     ),
                   ),
                   (route) => false);
-            } else
+            } else {
               msg = 'User Data Not Entry Successfully';
+            }
 
             if (mounted) {
               setState(() {
-                this._isLoading = false;
+                _isLoading = false;
               });
             }
           } else {

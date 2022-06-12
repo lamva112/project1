@@ -18,7 +18,7 @@ class RoundedButton extends StatelessWidget {
       onTap: () {
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => MainScreen()),
+          MaterialPageRoute(builder: (context) => const MainScreen()),
         );
       },
       borderRadius: BorderRadius.circular(30),
@@ -28,9 +28,9 @@ class RoundedButton extends StatelessWidget {
           borderRadius: BorderRadius.circular(30),
           color: AppColors.blue,
         ),
-        padding: EdgeInsets.symmetric(vertical: 20),
+        padding: const EdgeInsets.symmetric(vertical: 20),
         alignment: Alignment.center,
-        child: Text(
+        child: const Text(
           'LOGIN',
           style: TextStyle(color: Colors.white, fontSize: 18),
         ),

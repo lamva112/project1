@@ -1,10 +1,9 @@
 import 'dart:typed_data';
 
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:project1/post/feed_screen.dart';
+import 'package:project1/screens/mainscreen/mainscreen.dart';
 import 'package:provider/provider.dart';
 
 import '../provider/user_provider.dart';
@@ -23,7 +22,6 @@ class _AddPostScreenState extends State<AddPostScreen> {
   Uint8List? _file;
   bool isLoading = false;
   final TextEditingController _descriptionController = TextEditingController();
-
   var userData = {};
   @override
   void initState() {
@@ -90,7 +88,7 @@ class _AddPostScreenState extends State<AddPostScreen> {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (_) => FeedScreen(),
+              builder: (_) => const MainScreen(),
             ),
           );
         });
@@ -155,7 +153,7 @@ class _AddPostScreenState extends State<AddPostScreen> {
               actions: <Widget>[
                 TextButton(
                   onPressed: () => postImage(
-                    userProvider.getUser.uid,
+                    userProvider.getUser.email,
                     userProvider.getUser.username,
                     userProvider.getUser.photoUrl,
                   ),
@@ -191,8 +189,9 @@ class _AddPostScreenState extends State<AddPostScreen> {
                       child: TextField(
                         controller: _descriptionController,
                         decoration: const InputDecoration(
-                            hintText: "Write a caption...",
-                            border: InputBorder.none),
+                          hintText: "Write a caption...",
+                          border: InputBorder.none,
+                        ),
                         maxLines: 8,
                       ),
                     ),

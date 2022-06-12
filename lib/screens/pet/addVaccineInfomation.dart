@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
@@ -9,13 +8,11 @@ import 'package:project1/utils/colors.dart';
 import 'package:project1/utils/loading_widget.dart';
 
 import '../../resources/cloud_data_management.dart';
-import '../../resources/firestore_methods.dart';
 import '../../utils/fonts.dart';
-import '../../utils/utils.dart';
 
 class AddVaccineScreen extends StatefulWidget {
   final String petname;
-  AddVaccineScreen({Key? key, required this.petname}) : super(key: key);
+  const AddVaccineScreen({Key? key, required this.petname}) : super(key: key);
 
   @override
   State<AddVaccineScreen> createState() => _AddVaccineScreenState();
@@ -39,11 +36,6 @@ class _AddVaccineScreenState extends State<AddVaccineScreen> {
   }
 
   @override
-  void initState() {
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
@@ -51,25 +43,25 @@ class _AddVaccineScreenState extends State<AddVaccineScreen> {
       body: Form(
         key: _VaccineKey,
         child: _isLoading
-            ? Center(child: LoadingWidget())
+            ? const Center(child: LoadingWidget())
             : Container(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    SizedBox(
+                    const SizedBox(
                       height: 51,
                     ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
-                        SizedBox(
+                        const SizedBox(
                           width: 16,
                         ),
                         SvgPicture.asset(
                           'assets/images/Vector.svg',
                           height: 24,
                         ),
-                        SizedBox(
+                        const SizedBox(
                           width: 65,
                         ),
                         Text(
@@ -80,12 +72,12 @@ class _AddVaccineScreenState extends State<AddVaccineScreen> {
                         ),
                       ],
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 38,
                     ),
                     Row(
                       children: [
-                        SizedBox(
+                        const SizedBox(
                           width: 24,
                         ),
                         Text(
@@ -96,24 +88,25 @@ class _AddVaccineScreenState extends State<AddVaccineScreen> {
                         ),
                       ],
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 8,
                     ),
                     TextFieldInput(
                       validator: (String? inputVal) {
-                        if (inputVal!.length < 3)
+                        if (inputVal!.length < 3) {
                           return 'Name of vaccination must be at least 3 characters';
+                        }
                         return null;
                       },
                       size: size,
                       textEditingController: _name,
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 32,
                     ),
                     Row(
                       children: [
-                        SizedBox(
+                        const SizedBox(
                           width: 24,
                         ),
                         Text(
@@ -124,7 +117,7 @@ class _AddVaccineScreenState extends State<AddVaccineScreen> {
                         ),
                       ],
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 8,
                     ),
                     InJectDropdownButton(size),
@@ -138,7 +131,7 @@ class _AddVaccineScreenState extends State<AddVaccineScreen> {
 
   Container InJectDropdownButton(Size size) {
     return Container(
-      margin: EdgeInsets.only(left: 24, right: 24),
+      margin: const EdgeInsets.only(left: 24, right: 24),
       width: size.width,
       height: 48.0,
       decoration: BoxDecoration(
@@ -187,13 +180,13 @@ class _AddVaccineScreenState extends State<AddVaccineScreen> {
             minimumSize: Size(MediaQuery.of(context).size.width, 48.0),
             elevation: 5.0,
             primary: AppColors.red,
-            padding: EdgeInsets.only(
+            padding: const EdgeInsets.only(
               left: 20.0,
               right: 20.0,
               top: 7.0,
               bottom: 7.0,
             ),
-            shape: RoundedRectangleBorder(
+            shape: const RoundedRectangleBorder(
               borderRadius: BorderRadius.all(Radius.circular(16.0)),
             )),
         child: Text(
@@ -209,7 +202,7 @@ class _AddVaccineScreenState extends State<AddVaccineScreen> {
 
             if (mounted) {
               setState(() {
-                this._isLoading = true;
+                _isLoading = true;
               });
             }
 
@@ -233,13 +226,14 @@ class _AddVaccineScreenState extends State<AddVaccineScreen> {
                     ),
                   ),
                   (route) => false);
-            } else
+            } else {
               msg = 'User Data Not Entry Successfully';
+            }
           } else {
             print('Not Validated');
             if (mounted) {
               setState(() {
-                this._isLoading = false;
+                _isLoading = false;
               });
             }
           }

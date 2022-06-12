@@ -1,5 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:project1/provider/pet_provider.dart';
+import 'package:project1/resources/cloud_data_management.dart';
+import 'package:project1/screens/pet/petscreen.dart';
 import 'package:project1/utils/colors.dart';
 import 'package:provider/provider.dart';
 
@@ -19,6 +22,8 @@ class _MainScreenState extends State<MainScreen> {
   void initState() {
     super.initState();
     addData();
+
+    // AddPetData();
   }
 
   addData() async {
@@ -30,27 +35,22 @@ class _MainScreenState extends State<MainScreen> {
   int index = 0;
 
   final screeen = [
-    Center(
-      child: Text(
-        'My pet screen',
-        style: TextStyle(fontSize: 72),
-      ),
-    ),
-    Center(
+    const FeedScreen(),
+    const Center(
       child: Text(
         'shop screen',
         style: TextStyle(fontSize: 72),
       ),
     ),
-    FeedScreen(),
-    Center(
+    PetScreen(),
+    const Center(
       child: Text(
         'Messeger screen',
         style: TextStyle(fontSize: 72),
       ),
     ),
     ProfileScreen(
-      uid: FirebaseAuth.instance.currentUser!.uid,
+      uid: FirebaseAuth.instance.currentUser!.email.toString(),
     ),
   ];
 
@@ -58,20 +58,19 @@ class _MainScreenState extends State<MainScreen> {
   Widget build(BuildContext context) => Scaffold(
         body: screeen[index],
         bottomNavigationBar: NavigationBarTheme(
-          data: NavigationBarThemeData(indicatorColor: AppColors.red),
+          data: const NavigationBarThemeData(indicatorColor: AppColors.red),
           child: NavigationBar(
               height: 83,
-              backgroundColor: Color(0xFFf1f5fb),
+              backgroundColor: const Color(0xFFf1f5fb),
               selectedIndex: index,
               onDestinationSelected: (index) =>
                   setState(() => this.index = index),
-              destinations: [
-                NavigationDestination(
-                    icon: Icon(Icons.pets_outlined), label: 'My pet'),
-                NavigationDestination(
-                    icon: Icon(Icons.sell_outlined), label: 'Market'),
+              destinations: const [
                 NavigationDestination(
                     icon: Icon(Icons.feed_outlined), label: 'My feed'),
+                NavigationDestination(
+                    icon: Icon(Icons.sell_outlined), label: 'Market'),
+                NavigationDestination(icon: Icon(Icons.pets), label: 'My pet'),
                 NavigationDestination(
                     icon: Icon(Icons.message_outlined), label: 'mes'),
                 NavigationDestination(

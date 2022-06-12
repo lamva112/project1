@@ -25,9 +25,9 @@ class EmailAndPasswordAuth {
     try {
       final UserCredential userCredential = await FirebaseAuth.instance
           .signInWithEmailAndPassword(email: email, password: pwd);
-      if (userCredential.user!.emailVerified)
+      if (userCredential.user!.emailVerified) {
         return EmailSignInResults.SignInCompleted;
-      else {
+      } else {
         final bool logOutResponse = await logOut();
         if (logOutResponse) return EmailSignInResults.EmailNotVerified;
         return EmailSignInResults.UnexpectedError;

@@ -12,7 +12,7 @@ import 'onboardingScreen3.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 class onboardingWrapper extends StatefulWidget {
-  onboardingWrapper({Key? key}) : super(key: key);
+  const onboardingWrapper({Key? key}) : super(key: key);
 
   @override
   State<onboardingWrapper> createState() => _onboardingWrapperState();
@@ -35,7 +35,7 @@ class _onboardingWrapperState extends State<onboardingWrapper> {
                 Icons.arrow_back_ios,
                 color: AppColors.black,
               ),
-              pages: [
+              pages: const [
                 wellcomeScreen(),
                 onboardingScreen1(),
                 onboardingScreen2(),
@@ -53,7 +53,7 @@ class _onboardingWrapperState extends State<onboardingWrapper> {
                     onPressed: () {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => LoginScreen()),
+                        MaterialPageRoute(builder: (context) => const LoginScreen()),
                       );
                     },
                     child: const Text('SKIP'),
@@ -78,7 +78,7 @@ class _onboardingWrapperState extends State<onboardingWrapper> {
                           ? Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => LoginScreen()),
+                                  builder: (context) => const LoginScreen()),
                             )
                           : controller.animateToPage(
                               page: page > 4 ? 0 : page, duration: 400);

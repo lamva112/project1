@@ -1,112 +1,140 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:project1/utils/colors.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class AppTextStyle {
-  static final Title1 = TextStyle(
+  static const Title1 = TextStyle(
     color: AppColors.black,
     fontSize: 20,
     fontWeight: FontWeight.bold,
   );
-  static final Title2 = TextStyle(
+  static const Title2 = TextStyle(
     color: AppColors.black,
     fontSize: 18,
     fontStyle: FontStyle.normal,
     fontWeight: FontWeight.bold,
   );
-  static final Title3 = TextStyle(
+  static const Title3 = TextStyle(
     color: AppColors.black,
     fontSize: 18,
     fontStyle: FontStyle.normal,
     fontWeight: FontWeight.w500,
   );
-  static final Title4 = TextStyle(
+  static const Title4 = TextStyle(
     color: AppColors.black,
     fontSize: 16,
     fontStyle: FontStyle.normal,
     fontWeight: FontWeight.w500,
   );
-  static final Title5 = TextStyle(
+  static const Title5 = TextStyle(
     color: AppColors.black,
     fontSize: 24,
     fontStyle: FontStyle.normal,
     fontWeight: FontWeight.w700,
   );
-  static final Headline1 = TextStyle(
+
+  static const Title6 = TextStyle(
+    color: AppColors.white,
+    fontSize: 18,
+    fontStyle: FontStyle.normal,
+    fontWeight: FontWeight.bold,
+  );
+  static const Headline1 = TextStyle(
     color: AppColors.black,
-    fontSize: 16,
+    fontSize: 14,
     fontStyle: FontStyle.normal,
     fontWeight: FontWeight.w500,
   );
-  static final Headline2 = TextStyle(
+
+  static const Headline5 = TextStyle(
+    color: AppColors.grey3,
+    fontSize: 14,
+    fontStyle: FontStyle.normal,
+    fontWeight: FontWeight.w500,
+  );
+
+  static const Headline2 = TextStyle(
     color: AppColors.black,
     fontSize: 14,
     fontWeight: FontWeight.bold,
   );
-  static final Headline3 = TextStyle(
+  static const Headline3 = TextStyle(
     color: AppColors.black,
     fontSize: 14,
     fontStyle: FontStyle.normal,
     fontWeight: FontWeight.w500,
   );
-  static final Headline4 = TextStyle(
+  static const Headline4 = TextStyle(
     color: AppColors.black,
     fontSize: 12,
     fontStyle: FontStyle.normal,
     fontWeight: FontWeight.bold,
   );
 
-  static final Subheadline1 = TextStyle(
+  static const Subheadline1 = TextStyle(
     color: AppColors.black,
     fontSize: 12,
     fontStyle: FontStyle.normal,
     fontWeight: FontWeight.w400,
   );
 
-  static final Subheadline2 = TextStyle(
+  static const Subheadline2 = TextStyle(
     color: AppColors.black,
     fontSize: 12,
     fontStyle: FontStyle.normal,
     fontWeight: FontWeight.w500,
   );
 
-  static final Subheadline3 = TextStyle(
+  static const Subheadline3 = TextStyle(
     color: AppColors.black,
     fontSize: 12,
     fontStyle: FontStyle.normal,
     fontWeight: FontWeight.w400,
   );
 
-  static final Body1 = TextStyle(
+  static const Body1 = TextStyle(
+    color: AppColors.grey2,
+    fontSize: 18,
+    fontStyle: FontStyle.italic,
+    fontWeight: FontWeight.w500,
+  );
+
+  static const Body2 = TextStyle(
     color: AppColors.grey2,
     fontSize: 14,
     fontStyle: FontStyle.normal,
+    fontWeight: FontWeight.w500,
+  );
+
+  static const Body3 = TextStyle(
+    color: AppColors.black,
+    fontSize: 14,
+    fontStyle: FontStyle.normal,
     fontWeight: FontWeight.bold,
   );
 
-  static final Body2 = TextStyle(
-    color: AppColors.black,
+  static const Body4 = TextStyle(
+    color: AppColors.red,
+    fontSize: 12,
+    fontStyle: FontStyle.normal,
+    fontWeight: FontWeight.bold,
+  );
+
+  static const Body5 = TextStyle(
+    color: AppColors.grey2,
     fontSize: 14,
     fontStyle: FontStyle.normal,
     fontWeight: FontWeight.w500,
   );
 
-  static final Body3 = TextStyle(
+  static const TableCaptionElement = TextStyle(
     color: AppColors.black,
     fontSize: 14,
     fontStyle: FontStyle.normal,
     fontWeight: FontWeight.bold,
   );
 
-  static final TableCaptionElement = TextStyle(
-    color: AppColors.black,
-    fontSize: 14,
-    fontStyle: FontStyle.normal,
-    fontWeight: FontWeight.bold,
-  );
-
-  static final Button1 = TextStyle(
+  static const Button1 = TextStyle(
     color: AppColors.black,
     fontSize: 16,
     fontStyle: FontStyle.normal,
