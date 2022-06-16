@@ -1,11 +1,13 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:project1/chat/chatscreen.dart';
 import 'package:project1/provider/pet_provider.dart';
 import 'package:project1/resources/cloud_data_management.dart';
 import 'package:project1/screens/pet/petscreen.dart';
 import 'package:project1/utils/colors.dart';
 import 'package:provider/provider.dart';
 
+import '../../chat/ChatRoom.dart';
 import '../../post/feed_screen.dart';
 import '../../provider/user_provider.dart';
 import '../profile/profile_screen.dart';
@@ -43,11 +45,8 @@ class _MainScreenState extends State<MainScreen> {
       ),
     ),
     PetScreen(),
-    const Center(
-      child: Text(
-        'Messeger screen',
-        style: TextStyle(fontSize: 72),
-      ),
+    messsageScreen(
+      uid: FirebaseAuth.instance.currentUser!.uid.toString(),
     ),
     ProfileScreen(
       uid: FirebaseAuth.instance.currentUser!.email.toString(),
