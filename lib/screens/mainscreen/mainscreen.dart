@@ -10,7 +10,9 @@ import 'package:provider/provider.dart';
 import '../../chat/ChatRoom.dart';
 import '../../post/feed_screen.dart';
 import '../../provider/user_provider.dart';
+import '../manage_pet/manage_sreen.dart';
 import '../profile/profile_screen.dart';
+import '../trainModel/train_model.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({Key? key}) : super(key: key);
@@ -38,12 +40,7 @@ class _MainScreenState extends State<MainScreen> {
 
   final screeen = [
     const FeedScreen(),
-    const Center(
-      child: Text(
-        'shop screen',
-        style: TextStyle(fontSize: 72),
-      ),
-    ),
+    ManagePet(),
     PetScreen(),
     messsageScreen(
       uid: FirebaseAuth.instance.currentUser!.uid.toString(),
@@ -68,7 +65,7 @@ class _MainScreenState extends State<MainScreen> {
                 NavigationDestination(
                     icon: Icon(Icons.feed_outlined), label: 'My feed'),
                 NavigationDestination(
-                    icon: Icon(Icons.sell_outlined), label: 'Market'),
+                    icon: Icon(Icons.sell_outlined), label: 'Task'),
                 NavigationDestination(icon: Icon(Icons.pets), label: 'My pet'),
                 NavigationDestination(
                     icon: Icon(Icons.message_outlined), label: 'mes'),

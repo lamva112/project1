@@ -12,8 +12,10 @@ import 'package:project1/resources/storage_methods.dart';
 import 'package:project1/models/user.dart' as model;
 import 'package:project1/utils/constants.dart';
 import 'package:project1/utils/enum_generation.dart';
+import 'package:uuid/uuid.dart';
 
 import '../models/pet.dart' as models;
+import '../models/record.dart';
 import '../models/task.dart';
 import '../utils/send_notification_management.dart';
 
@@ -134,6 +136,7 @@ class CloudStoreDataManagement {
       required int startHour}) async {
     // asking uid here because we dont want to make extra calls to firebase auth when we can just get from our state management
     String res = "Some error occurred";
+    String taskId = const Uuid().v1();
     try {
       // creates unique id based on time
 
@@ -150,7 +153,7 @@ class CloudStoreDataManagement {
           .collection('pets')
           .doc(_auth.currentUser!.uid)
           .collection('tasks')
-          .doc(dates)
+          .doc(taskId)
           .set(date.toJson());
       res = "success";
     } catch (err) {
@@ -304,183 +307,103 @@ class CloudStoreDataManagement {
     }
   }
 
-  Future<Map<String, dynamic>> getTokenFromCloudStore(
-      {required String userMail}) async {
-    try {
-      final DocumentSnapshot<Map<String, dynamic>> documentSnapshot =
-          await FirebaseFirestore.instance
-              .doc('${this._collectionName}/$userMail')
-              .get();
-
-      print('DocumentSnapShot is: ${documentSnapshot.data()}');
-
-      final Map<String, dynamic> importantData = Map<String, dynamic>();
-
-      importantData["token"] = documentSnapshot.data()!["token"];
-      importantData["date"] = documentSnapshot.data()!["creation_date"];
-      importantData["time"] = documentSnapshot.data()!["creation_time"];
-
-      return importantData;
-    } catch (e) {
-      print('Error in get Token from Cloud Store: ${e.toString()}');
-      return {};
-    }
-  }
-
-  Future<List<Map<String, dynamic>>> getAllUsersListExceptMyAccount(
-      {required String currentUserEmail}) async {
-    try {
-      final QuerySnapshot<Map<String, dynamic>> querySnapshot =
-          await FirebaseFirestore.instance
-              .collection(this._collectionName)
-              .get();
-
-      List<Map<String, dynamic>> _usersDataCollection = [];
-
-      querySnapshot.docs.forEach(
-          (QueryDocumentSnapshot<Map<String, dynamic>> queryDocumentSnapshot) {
-        if (currentUserEmail != queryDocumentSnapshot.id)
-          _usersDataCollection.add({
-            queryDocumentSnapshot.id:
-                '${queryDocumentSnapshot.get("user_name")}[user-name-about-divider]${queryDocumentSnapshot.get("about")}',
-          });
-      });
-
-      print(_usersDataCollection);
-
-      return _usersDataCollection;
-    } catch (e) {
-      print('Error in get All Users List: ${e.toString()}');
-      return [];
-    }
-  }
-
-  Future<Map<String, dynamic>?> _getCurrentAccountAllData(
-      {required String email}) async {
-    try {
-      final DocumentSnapshot<Map<String, dynamic>> documentSnapshot =
-          await FirebaseFirestore.instance
-              .doc('${this._collectionName}/$email')
-              .get();
-
-      return documentSnapshot.data();
-    } catch (e) {
-      print('Error in getCurrentAccountAll Data: ${e.toString()}');
-      return {};
-    }
-  }
-
-  Future<List<dynamic>> currentUserConnectionRequestList(
-      {required String email}) async {
-    try {
-      Map<String, dynamic>? _currentUserData =
-          await _getCurrentAccountAllData(email: email);
-
-      final List<dynamic> _connectionRequestCollection =
-          _currentUserData!["connection_request"];
-
-      print('Collection: $_connectionRequestCollection');
-
-      return _connectionRequestCollection;
-    } catch (e) {
-      print('Error in Current USer Collection List: ${e.toString()}');
-      return [];
-    }
-  }
-
-  Future<void> changeConnectionStatus({
-    required String oppositeUserMail,
-    required String currentUserMail,
-    required String connectionUpdatedStatus,
-    required List<dynamic> currentUserUpdatedConnectionRequest,
-    bool storeDataAlsoInConnections = false,
+  Future<String> AddRecord({
+    required String dates,
+    required String temp,
+    required String weight,
+    required String fat,
+    required String neck,
+    required String waist,
+    required String height,
+    required String width,
+    required String meal,
+    required String note,
+    required String uid,
   }) async {
+    // asking uid here because we dont want to make extra calls to firebase auth when we can just get from our state management
+    String res = "Some error occurred";
+    String taskId = const Uuid().v1();
     try {
-      print('Come here');
+      // creates unique id based on time
+      Record record = Record(
+        date: dates,
+        temp: temp,
+        weight: weight,
+        fat: fat,
+        neck: neck,
+        waist: waist,
+        height: height,
+        width: width,
+        meal: meal,
+        note: note,
+        uid: uid,
+      );
+      _firestore
+          .collection('records')
+          .doc(_auth.currentUser!.uid)
+          .collection('record')
+          .doc(_auth.currentUser!.email)
+          .set(record.toJson());
+      res = "success";
+    } catch (err) {
+      res = err.toString();
+    }
+    return res;
+  }
 
-      /// Opposite Connection database Update
-      final DocumentSnapshot<Map<String, dynamic>> documentSnapshot =
-          await FirebaseFirestore.instance
-              .doc('${this._collectionName}/$oppositeUserMail')
-              .get();
-
-      Map<String, dynamic>? map = documentSnapshot.data();
-
-      print('Map: $map');
-
-      List<dynamic> _oppositeConnectionsRequestsList =
-          map!["connection_request"];
-
-      int index = -1;
-
-      _oppositeConnectionsRequestsList.forEach((element) {
-        if (element.keys.first.toString() == currentUserMail)
-          index = _oppositeConnectionsRequestsList.indexOf(element);
+  Future<bool> addBlood({
+    required String blood_pressure,
+    required String d_blood_pressure,
+    required String heartbeat,
+  }) async {
+    String res = "Some error occurred";
+    try {
+      // if the likes list contains the user uid, we need to remove it
+      String postId = const Uuid().v1();
+      _firestore
+          .collection('records')
+          .doc(_auth.currentUser!.uid)
+          .collection('blood')
+          .doc(postId)
+          .set({
+        'blood_pressure': blood_pressure,
+        'uid': _auth.currentUser!.uid,
+        'd_blood_pressure': d_blood_pressure,
+        'heartbeat': heartbeat,
+        'datePublished': DateFormat('hh:mm a').format(DateTime.now()),
+        "time": FieldValue.serverTimestamp(),
       });
-
-      if (index > -1) _oppositeConnectionsRequestsList.removeAt(index);
-
-      print('Opposite Connections: $_oppositeConnectionsRequestsList');
-
-      _oppositeConnectionsRequestsList.add({
-        currentUserMail: connectionUpdatedStatus,
-      });
-
-      print('Opposite Connections: $_oppositeConnectionsRequestsList');
-
-      map["connection_request"] = _oppositeConnectionsRequestsList;
-
-      if (storeDataAlsoInConnections)
-        map[FirestoreFieldConstants().connections].addAll({
-          currentUserMail: [],
-        });
-
-      await FirebaseFirestore.instance
-          .doc('${this._collectionName}/$oppositeUserMail')
-          .update(map);
-
-      /// Current User Connection Database Update
-      final Map<String, dynamic>? currentUserMap =
-          await _getCurrentAccountAllData(email: currentUserMail);
-
-      currentUserMap!["connection_request"] =
-          currentUserUpdatedConnectionRequest;
-
-      if (storeDataAlsoInConnections)
-        currentUserMap[FirestoreFieldConstants().connections].addAll({
-          oppositeUserMail: [],
-        });
-
-      await FirebaseFirestore.instance
-          .doc('${this._collectionName}/$currentUserMail')
-          .update(currentUserMap);
-    } catch (e) {
-      print('Error in Change Connection Status: ${e.toString()}');
+      return true;
+    } catch (err) {
+      print('Error in Register new user: ${err.toString()}');
+      return false;
     }
   }
 
-  Future<Stream<QuerySnapshot<Map<String, dynamic>>>?>
-      fetchRealTimeDataFromFirestore() async {
+  Future<bool> addPending({
+    required String num,
+    required String note,
+  }) async {
+    String res = "Some error occurred";
     try {
-      return FirebaseFirestore.instance
-          .collection(this._collectionName)
-          .snapshots();
-    } catch (e) {
-      print('Error in Fetch Real Time Data : ${e.toString()}');
-      return null;
-    }
-  }
-
-  Future<Stream<DocumentSnapshot<Map<String, dynamic>>>?>
-      fetchRealTimeMessages() async {
-    try {
-      return FirebaseFirestore.instance
-          .doc(
-              '${this._collectionName}/${FirebaseAuth.instance.currentUser!.email.toString()}')
-          .snapshots();
-    } catch (e) {
-      print('Error in Fetch Real Time Data : ${e.toString()}');
-      return null;
+      // if the likes list contains the user uid, we need to remove it
+      String postId = const Uuid().v1();
+      _firestore
+          .collection('records')
+          .doc(_auth.currentUser!.uid)
+          .collection('pending')
+          .doc(postId)
+          .set({
+        'money': num,
+        'uid': _auth.currentUser!.uid,
+        'note': note,
+        'datePublished': DateFormat('hh:mm a').format(DateTime.now()),
+        "time": FieldValue.serverTimestamp(),
+      });
+      return true;
+    } catch (err) {
+      print('Error in Register new user: ${err.toString()}');
+      return false;
     }
   }
 }

@@ -250,7 +250,7 @@ class _ChatRoomState extends State<ChatRoom> {
                 Container(
                   height: 672,
                   decoration: BoxDecoration(
-                    color: Colors.red,
+                    color: Colors.white,
                     borderRadius: BorderRadius.only(
                       topLeft: Radius.circular(36.0),
                       topRight: Radius.circular(36.0),
@@ -286,6 +286,7 @@ class _ChatRoomState extends State<ChatRoom> {
                                         child: CircularProgressIndicator(),
                                       );
                                     }
+
                                     return ListView.separated(
                                       physics:
                                           const NeverScrollableScrollPhysics(),
@@ -320,7 +321,7 @@ class _ChatRoomState extends State<ChatRoom> {
           )
         ],
       ),
-      bottomNavigationBar: SafeArea(
+      bottomSheet: SafeArea(
         child: Container(
           height: 54,
           width: 319,

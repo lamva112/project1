@@ -1,0 +1,9 @@
+0 chihuahua
+1 Alaskan
+2 Pug
+3 Husky
+4 Dachshund
+5 Corgi
+6 Phu Quoc
+7 Pitbull
+8 Poodle

@@ -95,6 +95,9 @@ class _AddTimeTableScreenState extends State<AddTimeTableScreen> {
             : Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  SizedBox(
+                    height: 44,
+                  ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
@@ -111,13 +114,15 @@ class _AddTimeTableScreenState extends State<AddTimeTableScreen> {
                     height: 40,
                   ),
                   Container(
-                    margin: EdgeInsets.only(left: 24, right: 24),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Row(
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
+                            SizedBox(
+                              width: 24,
+                            ),
                             Text(
                               'Title*',
                               style: TextStyle(
@@ -146,6 +151,9 @@ class _AddTimeTableScreenState extends State<AddTimeTableScreen> {
                         ),
                         Row(
                           children: [
+                            SizedBox(
+                              width: 24,
+                            ),
                             Text(
                               'Decription*',
                               style: TextStyle(
@@ -174,6 +182,9 @@ class _AddTimeTableScreenState extends State<AddTimeTableScreen> {
                         ),
                         Row(
                           children: [
+                            SizedBox(
+                              width: 24,
+                            ),
                             Text(
                               'Add date',
                               style: TextStyle(
@@ -192,8 +203,11 @@ class _AddTimeTableScreenState extends State<AddTimeTableScreen> {
                         ),
                         Row(
                           children: [
+                            SizedBox(
+                              width: 24,
+                            ),
                             Text(
-                              'Add date',
+                              'Add time',
                               style: TextStyle(
                                 fontSize: 12,
                                 fontWeight: FontWeight.w500,
@@ -204,115 +218,121 @@ class _AddTimeTableScreenState extends State<AddTimeTableScreen> {
                         const SizedBox(
                           height: 8,
                         ),
-                        SizedBox(
-                          width: size.width,
-                          height: 48,
-                          // ignore: lines_longer_than_80_chars
-                          child: ElevatedButton(
-                            onPressed: () async {
-                              TimeRange? result = await showCupertinoDialog(
-                                barrierDismissible: true,
-                                context: context,
-                                builder: (BuildContext context) {
-                                  TimeOfDay _startTime = TimeOfDay.now();
-                                  TimeOfDay _endTime = TimeOfDay.now();
-                                  return CupertinoAlertDialog(
-                                    content: Container(
-                                        width:
-                                            MediaQuery.of(context).size.width,
-                                        height: 340,
-                                        child: Column(
-                                          children: [
-                                            TimeRangePicker(
-                                              padding: 22,
-                                              hideButtons: true,
-                                              handlerRadius: 8,
-                                              strokeWidth: 4,
-                                              ticks: 12,
-                                              activeTimeTextStyle: TextStyle(
-                                                fontWeight: FontWeight.normal,
-                                                fontSize: 22,
-                                                color: Colors.white,
+                        Container(
+                          margin: EdgeInsets.only(left: 24, right: 24),
+                          child: SizedBox(
+                            width: size.width,
+                            height: 48,
+                            // ignore: lines_longer_than_80_chars
+                            child: ElevatedButton(
+                              onPressed: () async {
+                                TimeRange? result = await showCupertinoDialog(
+                                  barrierDismissible: true,
+                                  context: context,
+                                  builder: (BuildContext context) {
+                                    TimeOfDay _startTime = TimeOfDay.now();
+                                    TimeOfDay _endTime = TimeOfDay.now();
+                                    return CupertinoAlertDialog(
+                                      content: Container(
+                                          width:
+                                              MediaQuery.of(context).size.width,
+                                          height: 340,
+                                          child: Column(
+                                            children: [
+                                              TimeRangePicker(
+                                                padding: 22,
+                                                hideButtons: true,
+                                                handlerRadius: 8,
+                                                strokeWidth: 4,
+                                                ticks: 12,
+                                                activeTimeTextStyle: TextStyle(
+                                                  fontWeight: FontWeight.normal,
+                                                  fontSize: 22,
+                                                  color: Colors.white,
+                                                ),
+                                                timeTextStyle: TextStyle(
+                                                  fontWeight: FontWeight.normal,
+                                                  fontSize: 22,
+                                                  color: Colors.white70,
+                                                ),
+                                                onStartChange: (start) {
+                                                  setState(() {
+                                                    _startTime = start;
+                                                  });
+                                                },
+                                                onEndChange: (end) {
+                                                  setState(() {
+                                                    _endTime = end;
+                                                  });
+                                                },
                                               ),
-                                              timeTextStyle: TextStyle(
-                                                fontWeight: FontWeight.normal,
-                                                fontSize: 22,
-                                                color: Colors.white70,
-                                              ),
-                                              onStartChange: (start) {
-                                                setState(() {
-                                                  _startTime = start;
-                                                });
-                                              },
-                                              onEndChange: (end) {
-                                                setState(() {
-                                                  _endTime = end;
-                                                });
-                                              },
-                                            ),
-                                          ],
-                                        )),
-                                    actions: <Widget>[
-                                      CupertinoDialogAction(
-                                          isDestructiveAction: true,
-                                          child: Text('Cancel'),
+                                            ],
+                                          )),
+                                      actions: <Widget>[
+                                        CupertinoDialogAction(
+                                            isDestructiveAction: true,
+                                            child: Text('Cancel'),
+                                            onPressed: () {
+                                              Navigator.of(context).pop();
+                                            }),
+                                        CupertinoDialogAction(
+                                          child: Text('Ok'),
                                           onPressed: () {
-                                            Navigator.of(context).pop();
-                                          }),
-                                      CupertinoDialogAction(
-                                        child: Text('Ok'),
-                                        onPressed: () {
-                                          Navigator.of(context).pop(
-                                            TimeRange(
-                                              startTime: _startTime,
-                                              endTime: _endTime,
-                                            ),
-                                          );
-                                          setState(() {
-                                            startTime = _startTime;
-                                            endTime = _endTime;
-                                          });
-                                        },
-                                      ),
-                                    ],
-                                  );
-                                },
-                              );
-                              print(result.toString());
-                            },
-                            child: Text(
-                                '${startTime.format(context)} - ${endTime.format(context)}'),
+                                            Navigator.of(context).pop(
+                                              TimeRange(
+                                                startTime: _startTime,
+                                                endTime: _endTime,
+                                              ),
+                                            );
+                                            setState(() {
+                                              startTime = _startTime;
+                                              endTime = _endTime;
+                                            });
+                                          },
+                                        ),
+                                      ],
+                                    );
+                                  },
+                                );
+                                print(result.toString());
+                              },
+                              child: Text(
+                                  '${startTime.format(context)} - ${endTime.format(context)}'),
+                            ),
                           ),
                         ),
                         SizedBox(
                           height: 24,
                         ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              'Remind',
-                              style: TextStyle(
-                                  color: Colors.black,
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.normal),
-                            ),
-                            Spacer(),
-                            FlutterSwitch(
-                              width: 55.0,
-                              height: 25.0,
-                              valueFontSize: 12.0,
-                              toggleSize: 18.0,
-                              activeColor: Colors.red,
-                              inactiveColor: Colors.grey,
-                              value: status,
-                              onToggle: (val) {
-                                setState(() {
-                                  status = val;
-                                });
-                              },
-                            ),
-                          ],
+                        Padding(
+                          padding: const EdgeInsets.only(left: 24, right: 24),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                'Remind',
+                                style: TextStyle(
+                                    color: Colors.black,
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.normal),
+                              ),
+                              Spacer(),
+                              FlutterSwitch(
+                                width: 55.0,
+                                height: 25.0,
+                                valueFontSize: 12.0,
+                                toggleSize: 18.0,
+                                activeColor: Colors.red,
+                                inactiveColor: Colors.grey,
+                                value: status,
+                                onToggle: (val) {
+                                  setState(() {
+                                    status = val;
+                                  });
+                                },
+                              ),
+                            ],
+                          ),
                         ),
                       ],
                     ),
@@ -326,6 +346,7 @@ class _AddTimeTableScreenState extends State<AddTimeTableScreen> {
 
   Widget DatePickerButton(BuildContext context) {
     return Container(
+      margin: EdgeInsets.only(left: 24, right: 24),
       child: ElevatedButton(
         style: ElevatedButton.styleFrom(
             minimumSize: Size(MediaQuery.of(context).size.width, 48.0),
@@ -365,7 +386,7 @@ class _AddTimeTableScreenState extends State<AddTimeTableScreen> {
 
   Widget signUpAuthButton(BuildContext context, String buttonName) {
     return Padding(
-      padding: const EdgeInsets.only(left: 24.0, right: 24.0),
+      padding: const EdgeInsets.only(left: 24.0, right: 24.0, bottom: 28),
       child: ElevatedButton(
         style: ElevatedButton.styleFrom(
             minimumSize: Size(MediaQuery.of(context).size.width, 48.0),
