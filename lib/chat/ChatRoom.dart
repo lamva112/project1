@@ -69,7 +69,8 @@ class _ChatRoomState extends State<ChatRoom> {
     });
   }
 
-  void onSendMessage({required String username}) async {
+  void onSendMessage(
+      {required String username, required String photoUrl}) async {
     if (_message.text.isNotEmpty) {
       Map<String, dynamic> messages = {
         "sendby": username,
@@ -79,12 +80,23 @@ class _ChatRoomState extends State<ChatRoom> {
         "lasttime": DateFormat('hh:mm a').format(DateTime.now()),
       };
 
-      _message.clear();
       await _firestore
           .collection('messages')
           .doc(widget.messagesId)
           .collection('chats')
           .add(messages);
+
+      await _firestore.collection('messages').doc(widget.messagesId).set({
+        "user1": widget.snap['username'],
+        "user2": widget.snap['username'],
+        "photoUrl1": photoUrl,
+        "photoUrl2": widget.snap['photoUrl'],
+        "message": _message.text,
+        "type": "text",
+        "lasttime": DateFormat('hh:mm a').format(DateTime.now()),
+        "Members": [username, widget.snap['username']],
+      });
+      _message.clear();
     } else {
       print("Enter Some Text");
     }
@@ -397,7 +409,10 @@ class _ChatRoomState extends State<ChatRoom> {
                       iconSize: 18,
                       color: Colors.white,
                       onPressed: () {
-                        onSendMessage(username: userProvider.getUser.username);
+                        onSendMessage(
+                          username: userProvider.getUser.username,
+                          photoUrl: userProvider.getUser.photoUrl,
+                        );
                       },
                     ),
                   ),

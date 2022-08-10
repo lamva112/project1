@@ -22,7 +22,6 @@ class messsageScreen extends StatefulWidget {
 
 class _messsageScreenState extends State<messsageScreen> {
   final FirebaseAuth _auth = FirebaseAuth.instance;
-  List<models.User> userList = [];
 
   String chatRoomId(String user1, String user2) {
     if (user1.compareTo(user2) == -1) {
@@ -105,6 +104,110 @@ class _messsageScreenState extends State<messsageScreen> {
                                   height: 32,
                                 ),
                               ),
+                            ),
+                            decoration: new BoxDecoration(
+                              shape: BoxShape.circle,
+                            ),
+                          ),
+                        ),
+                      ),
+                    );
+                  },
+                  separatorBuilder: (context, position) => const SizedBox(
+                    height: 10,
+                  ),
+                  itemCount: snapshot.data!.docs.length,
+                );
+              },
+            ),
+          ),
+          SizedBox(
+            height: 60,
+          ),
+          Container(
+            width: size.width,
+            height: 500,
+            child: StreamBuilder(
+              stream: FirebaseFirestore.instance
+                  .collection('messages')
+                  .where("Members", arrayContains: "lamkhac")
+                  .snapshots(),
+              builder: (context,
+                  AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>> snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const Center(
+                    child: CircularProgressIndicator(),
+                  );
+                }
+                return ListView.separated(
+                  scrollDirection: Axis.vertical,
+                  shrinkWrap: true,
+                  itemBuilder: (context, position) {
+                    return Container(
+                      padding: EdgeInsets.only(left: 4, right: 4),
+                      alignment: Alignment.center,
+                      child: GestureDetector(
+                        onTap: () {},
+                        child: AnimatedContainer(
+                          alignment: Alignment.center,
+                          duration: Duration(milliseconds: 300),
+                          height: 100,
+                          width: size.width,
+                          decoration: BoxDecoration(
+                            color: Colors.amber,
+                            borderRadius: BorderRadius.circular(24),
+                          ),
+                          child: Container(
+                            alignment: Alignment.bottomCenter,
+                            width: 367,
+                            height: 100,
+                            child: Row(
+                              children: [
+                                Container(
+                                  alignment: Alignment.bottomCenter,
+                                  width: 48,
+                                  height: 48,
+                                  child: Container(
+                                    padding: EdgeInsets.all(4),
+                                    child: ClipRRect(
+                                      borderRadius: BorderRadius.circular(16),
+                                      child: Image.network(
+                                        snapshot.data!.docs[position]
+                                                    .data()['photoUrl1'] ==
+                                                userProvider.getUser.photoUrl
+                                            ? snapshot.data!.docs[position]
+                                                .data()['photoUrl2']
+                                            : snapshot.data!.docs[position]
+                                                .data()['photoUrl1'],
+                                        width: 32,
+                                        height: 32,
+                                      ),
+                                    ),
+                                  ),
+                                  decoration: new BoxDecoration(
+                                    shape: BoxShape.circle,
+                                  ),
+                                ),
+                                Container(
+                                    padding: EdgeInsets.all(4),
+                                    child: Text(
+                                      snapshot.data!.docs[position]
+                                                  .data()['user1'] ==
+                                              userProvider.getUser.username
+                                          ? snapshot.data!.docs[position]
+                                              .data()['user2']
+                                          : snapshot.data!.docs[position]
+                                              .data()['user1'],
+                                      style: TextStyle(color: Colors.white),
+                                    )),
+                                Container(
+                                    padding: EdgeInsets.all(4),
+                                    child: Text(
+                                      snapshot.data!.docs[position]
+                                          .data()['message'],
+                                      style: TextStyle(color: Colors.white),
+                                    )),
+                              ],
                             ),
                             decoration: new BoxDecoration(
                               shape: BoxShape.circle,
